@@ -1,0 +1,18 @@
+Hubert Legêæ
+nr albumu: 261461
+e-mail: hlegec@stud.elka.pw.edu.pl
+
+
+Polecenie:
+
+W przestrzeni trójwymiarowej zdefiniowany jest zbiór graniastos³upów, o poziomych podstawach, bêd¹cych wielok¹tami dowolnymi.
+Graniastos³upy nie musz¹ byæ roz³¹czne. Dokonaæ wzajemnego podzia³u graniastos³upów w kierunku pionowym wzd³u¿ p³aszczyzn zawieraj¹cych ich œciany boczne
+(ka¿de dwa graniastos³upy, których rzuty poziome na siebie nachodz¹, powinny siê wzajemnie rozcinaæ wzd³u¿ swoich œcian bocznych nawet jeœli maj¹ roz³¹czne zakresy wysokoœci).
+Dane wyjœciowe powinny byæ uporz¹dkowane tak, aby dla ka¿dego obszaru na p³aszczyŸnie poziomej prezentowana by³a lista zakresów pionowych le¿¹cych nad nim graniastos³upów.
+Porównaæ czas obliczeñ i wyniki ró¿nych metod.
+
+
+Struktura pliku wejœciowego:
+1.Ka¿da linia odpowiada jednemu graniastos³upowi.
+2.Struktura linii:
+	wspolrzedna_z_dolna,wspolrzedna_z_gorna; x1,y1; x2,y2; x3,y3; .....
