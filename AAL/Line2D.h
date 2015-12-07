@@ -11,7 +11,7 @@ enum Orientation {
 };
 
 class Line2D {
-private:
+protected:
 	Point2D start;
 	Point2D end;
 public:
