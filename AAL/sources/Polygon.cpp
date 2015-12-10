@@ -1,5 +1,5 @@
-#include "Polygon.h"
-#include "Line2D.h"
+#include "../headers/Polygon.h"
+#include "../headers/Line2D.h"
 #include <limits>
 #include <sstream>
 

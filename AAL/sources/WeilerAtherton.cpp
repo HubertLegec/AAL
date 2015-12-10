@@ -1,5 +1,5 @@
-#include "WeilerAtherton.h"
-#include "Line2D.h"
+#include "../headers/WeilerAtherton.h"
+#include "../headers/Line2D.h"
 
 void WeilerAtherton::generateVertexLists()
 {

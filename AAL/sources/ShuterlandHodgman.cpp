@@ -1,6 +1,6 @@
-#include "ShuterlandHodgman.h"
+#include "../headers/ShuterlandHodgman.h"
 
-#include "Line2D.h"
+#include "../headers/Line2D.h"
 
 ShuterlandHodgman::ShuterlandHodgman(const Prism& first, const Prism& second) : firstPrism(first), secondPrism(second)
 {

@@ -1,6 +1,5 @@
-#include "Prism.h"
-#include <limits>
-#include <sstream>
+#include <c++/sstream>
+#include "../headers/Prism.h"
 
 
 Prism::Prism()
@@ -20,14 +19,14 @@ Prism::Prism(int id, std::vector<Point2D> vertexes)
 	this->base.add(vertexes);
 }
 
-Prism::Prism(int id, double bottom, double top, const Polygon & base)
+Prism::Prism(const int id, double bottom, double top, const Polygon & base)
 {
 	this->id = id;
 	heightRanges.emplace(id, std::pair<double, double>(bottom, top));
 	this->base = base;
 }
 
-Prism::Prism(int id, double bottom, double top, std::vector<Point2D> vertexes)
+Prism::Prism(const int id, double bottom, double top, std::vector<Point2D> vertexes)
 {
 	this->id = id;
 	heightRanges.emplace(id, std::pair<double, double>(bottom, top));
@@ -109,7 +108,7 @@ void Prism::setBottom(double bottom)
 	heightRanges.at(id).first = bottom;
 }
 
-void Prism::addHeightRange(int id, double bottom, double top)
+void Prism::addHeightRange(const int id, double bottom, double top)
 {
 	heightRanges.emplace(id, std::pair<double, double>(bottom, top));
 }

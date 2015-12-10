@@ -1,4 +1,4 @@
-#include "PrismGenerator.h"
+#include "../headers/PrismGenerator.h"
 
 PrismGenerator::PrismGenerator()
 {
@@ -32,7 +32,8 @@ std::vector<Prism> PrismGenerator::generate() const
 	return std::vector<Prism>();
 }
 
-Prism PrismGenerator::generateSingle() const
+
+Prism PrismGenerator::generateConvexSingle() const
 {
 	//TODO
 	return Prism();

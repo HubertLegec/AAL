@@ -35,7 +35,7 @@ public:
 	void setId(int id);
 	void setTop(double top);
 	void setBottom(double bottom);
-	void addHeightRange(int id, double bottom, double top);
+	void addHeightRange(const int id, const double bottom, const double top);
 	Polygon getBase();
 	Collection<Point2D> getVertexList() const;
 	std::string toString();

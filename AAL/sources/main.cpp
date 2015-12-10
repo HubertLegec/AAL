@@ -1,10 +1,10 @@
 #include <iostream>
 
-#include "UserInterface.h"
+#include "../headers/UserInterface.h"
 
-#include "Polygon.h"
-#include "WeilerAtherton.h"
-#include "ShuterlandHodgman.h"
+#include "../headers/Polygon.h"
+#include "../headers/WeilerAtherton.h"
+#include "../headers/ShuterlandHodgman.h"
 
 using namespace std;
 

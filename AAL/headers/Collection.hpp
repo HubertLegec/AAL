@@ -14,7 +14,7 @@ public:
 	{
 	protected:
 		friend class Collection<T>;
-		std::vector<T>& vec;
+		std::vector<T>& vec = nullptr;
 		int counter;
 
 		const_iterator(std::vector<T>& vector, int counter) : vec(vector), counter(counter) {}
@@ -25,28 +25,28 @@ public:
 		const_iterator(const const_iterator& other) : vec(other.vec), counter(other.counter) {}
 		inline const T& operator*() const
 		{
-			return vec[counter];
+			return this->vec[counter];
 		}
 
 		inline const T* operator->() const
 		{
-			return &(vec[counter]);
+			return &(this->vec[counter]);
 		}
 
 		inline bool operator==(const const_iterator& a) const
 		{
-			return vec == a.vec && counter == a.counter;
+			return this->vec == a.vec && this->counter == a.counter;
 		}
 
 		inline bool operator!=(const const_iterator& a) const
 		{
-			return vec != a.vec || counter != a.counter;
+			return this->vec != a.vec || this->counter != a.counter;
 		}
 
 		// preincrement
 		const_iterator& operator++() {
-			if(counter < vec.size())
-				counter++; //(counter + 1) % vec.size();
+			if(this->counter < this->vec.size())
+				this->counter++; //(counter + 1) % vec.size();
 			return *this;
 		}
 		// postincrement
@@ -57,7 +57,7 @@ public:
 		}
 		// predecrement
 		const_iterator& operator--() {
-			counter = counter > 0 ? (counter - 1) : counter; //(vec.size() - 1);
+			this->counter = this->counter > 0 ? (this->counter - 1) : this->counter; //(vec.size() - 1);
 			return *this;
 		}
 		// postdecrement
@@ -76,18 +76,17 @@ public:
 	public:
 		iterator() {}
 		iterator(const const_iterator& a) : const_iterator(a) {}
-		iterator(const iterator& a) {
-			vec = a.vec;
-			counter = a.counter;
+		iterator(const iterator& a) : const_iterator(a) {
+
 		}
 
 		inline T& operator*() const
 		{
-			return vec[counter];
+			return this->vec[this->counter];
 		}
 		inline T* operator->() const
 		{
-			return &(vec[counter]);
+			return &(this->vec[this->counter]);
 		}
 
 		iterator& operator++()
