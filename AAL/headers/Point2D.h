@@ -4,9 +4,10 @@
 #include <string>
 
 class Point2D {
-private:
+protected:
 	double x;
 	double y;
+private:
 	bool intersectionPoint;
 
 public:
