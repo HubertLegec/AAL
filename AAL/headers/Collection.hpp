@@ -192,7 +192,7 @@ public:
 		return collection == other.collection;
 	}
 
-	T getNext(const T& item) {
+	T& getNext(const T& item) {
 		return collection[(getIndex(item) + 1) % collection.size()];
 	}
 

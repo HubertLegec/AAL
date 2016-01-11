@@ -2,9 +2,7 @@
 
 #include "headers/UserInterface.h"
 
-#include "headers/Polygon.h"
 #include "headers/WeilerAtherton.h"
-#include "headers/ShuterlandHodgman.h"
 
 using namespace std;
 
@@ -79,11 +77,13 @@ int main(int argc, char *argv[]) {
 		cout << res[i].toString() << endl;
 	}*/
 
-	WeilerAtherton w1(Prism(0, 1, 2, pol1), Prism(1, 2, 3, pol2));
-	w1.doWeilerAtherton();
-	for (Prism p : w1.getIntersectionParts()) {
-		std::cout << p.toString() << endl;
-	}
+    std::cout << std::endl << "TEST1:" << std::endl;
+
+    WeilerAtherton w1(Prism(0, 1, 2, pol1), Prism(1, 2, 3, pol2));
+    w1.doWeilerAtherton();
+    for (Prism p : w1.getIntersectionParts()) {
+        std::cout << p.toString() << endl;
+    }
 
 
 	std::cout << std::endl << "TEST2:" << std::endl;
@@ -94,11 +94,12 @@ int main(int argc, char *argv[]) {
 		std::cout << p.toString() << endl;
 	}
 
-	std::cout << std::endl << "TEST3:" << std::endl;
+	+
+	/*std::cout << std::endl << "TEST3:" << std::endl;
 	ShuterlandHodgman s1(Prism(4, 4, 5, pol6), Prism(3, 3, 4, pol5));
 	s1.doIntersection();
 
-	std::cout << s1.getIntersection().toString() << std::endl;
+	std::cout << s1.getIntersection().toString() << std::endl;*/
 
 	system("PAUSE");
 	return 0;

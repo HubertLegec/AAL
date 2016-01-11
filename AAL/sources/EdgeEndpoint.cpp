@@ -6,11 +6,11 @@
 
 EdgeEndpoint::EdgeEndpoint() : Point2D() { }
 
-EdgeEndpoint::EdgeEndpoint(Point2D point) : Point2D(point){
+EdgeEndpoint::EdgeEndpoint(Point2D point) : Point2D(point) {
 
 }
 
-EdgeEndpoint::EdgeEndpoint(const EdgeEndpoint &other) : Point2D(other){
+EdgeEndpoint::EdgeEndpoint(const EdgeEndpoint &other) : Point2D(other) {
     this->type = other.type;
     this->tl = other.tl;
     this->inOut = other.inOut;
@@ -63,6 +63,6 @@ void EdgeEndpoint::setSecondEndpoint(EdgeEndpoint *secondEndpoint) {
     this->secondEndpoint = secondEndpoint;
 }
 
-EdgeEndpoint* EdgeEndpoint::getSecondEndpoint() const {
-    return this->secondEndpoint
+EdgeEndpoint *EdgeEndpoint::getSecondEndpoint() const {
+    return this->secondEndpoint;
 }

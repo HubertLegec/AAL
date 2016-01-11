@@ -5,29 +5,44 @@
 
 class Point2D {
 protected:
-	double x;
-	double y;
+    double x;
+    double y;
 private:
-	bool intersectionPoint;
+    bool intersectionPoint;
+    bool visited;
 
 public:
-	Point2D() : x(0), y(0), intersectionPoint(false) {};
-	Point2D(double x, double y, bool intersectionPoint = false);
-	Point2D(const Point2D& other);
+    Point2D() : x(0), y(0), intersectionPoint(false) { };
 
-	Point2D& operator=(const Point2D& other);
-	bool operator==(const Point2D& other) const;
-	bool operator!=(const Point2D& other) const;
-	double getDistance(const Point2D& other) const;
+    Point2D(double x, double y, bool intersectionPoint = false, bool visited = false);
 
-	void setX(double x);
-	void setY(double y);
-	double getX() const;
-	double getY() const;
-	bool isIntersectionPoint() const;
+    Point2D(const Point2D &other);
 
-	std::string toString() const;
+    Point2D &operator=(const Point2D &other);
 
+    bool operator==(const Point2D &other) const;
+
+    bool operator!=(const Point2D &other) const;
+
+    double getDistance(const Point2D &other) const;
+
+    void setX(double x);
+
+    void setY(double y);
+
+    double getX() const;
+
+    double getY() const;
+
+    bool isIntersectionPoint() const;
+
+    void setIntersectionPoint(bool intersectionPoint);
+
+    bool isVisited() const;
+
+    void setVisited(bool visited);
+
+    std::string toString() const;
 };
 
 #endif

@@ -1,139 +1,123 @@
 #include <c++/sstream>
 #include "../headers/Prism.h"
 
+using namespace std;
 
-Prism::Prism()
-{
-	this->id = -1;
+Prism::Prism() {
+    this->id = -1;
 }
 
-Prism::Prism(int id, const Polygon & base)
-{
-	this->id = id;
-	this->base = base;
+Prism::Prism(int id, const Polygon &base) {
+    this->id = id;
+    this->base = base;
 }
 
-Prism::Prism(int id, std::vector<Point2D> vertexes)
-{
-	this->id = id;
-	this->base.add(vertexes);
+Prism::Prism(vector<Point2D> vertexes, int id) {
+    this->id = id;
+    this->base.add(vertexes);
 }
 
-Prism::Prism(const int id, double bottom, double top, const Polygon & base)
-{
-	this->id = id;
-	heightRanges.emplace(id, std::pair<double, double>(bottom, top));
-	this->base = base;
+Prism::Prism(const int id, double bottom, double top, const Polygon &base) {
+    this->id = id;
+    heightRanges.insert(make_pair(id, make_pair(bottom, top)));
+    this->base = base;
 }
 
-Prism::Prism(const int id, double bottom, double top, std::vector<Point2D> vertexes)
-{
-	this->id = id;
-	heightRanges.emplace(id, std::pair<double, double>(bottom, top));
-	this->base.add(vertexes);
+Prism::Prism(const int id, double bottom, double top, vector<Point2D> vertexes) {
+    this->id = id;
+    heightRanges.insert(make_pair(id, make_pair(bottom, top)));
+    this->base.add(vertexes);
 }
 
-Prism::Prism(const Prism & other)
-{
-	this->heightRanges = other.heightRanges;
-	this->id = other.id;
-	this->base = other.base;
+Prism::Prism(const Prism &other) {
+    this->heightRanges = other.heightRanges;
+    this->id = other.id;
+    this->base = other.base;
 }
 
-Prism & Prism::operator=(const Prism & other)
-{
-	this->heightRanges = other.heightRanges;
-	this->id = id;
-	this->base = other.base;
-	return *this;
+Prism &Prism::operator=(const Prism &other) {
+    this->heightRanges = other.heightRanges;
+    this->id = id;
+    this->base = other.base;
+    return *this;
 }
 
-bool Prism::operator==(const Prism & other) const
-{
-	return id == other.id;
+bool Prism::operator==(const Prism &other) const {
+    return id == other.id;
 }
 
-double Prism::getTop() const
-{
-	return heightRanges.at(id).second;
+double Prism::getTop() const {
+    return heightRanges.at(id).second;
 }
 
-double Prism::getBottom() const
-{
-	return heightRanges.at(id).first;
+double Prism::getBottom() const {
+    return heightRanges.at(id).first;
 }
 
-int Prism::getId() const
-{
-	return id;
+int Prism::getId() const {
+    return id;
 }
 
-std::map<int, std::pair<double, double>> Prism::getHeightRanges() const
-{
-	return heightRanges;
+map<int, pair<double, double>> Prism::getHeightRanges() const {
+    return heightRanges;
 }
 
-double Prism::getMinX() const
-{
-	return base.getMinX();
+double Prism::getMinX() const {
+    return base.getMinX();
 }
 
-double Prism::getMaxX() const
-{
-	return base.getMaxX();
+double Prism::getMaxX() const {
+    return base.getMaxX();
 }
 
-double Prism::getMinY() const
-{
-	return base.getMinY();
+double Prism::getMinY() const {
+    return base.getMinY();
 }
 
-double Prism::getMaxY() const
-{
-	return base.getMaxY();
+double Prism::getMaxY() const {
+    return base.getMaxY();
 }
 
-void Prism::setId(int id)
-{
-	this->id = id;
+void Prism::setId(int id) {
+    this->id = id;
 }
 
-void Prism::setTop(double top)
-{
-	heightRanges.at(id).second = top;
+void Prism::setTop(double top) {
+    heightRanges.at(id).second = top;
 }
 
-void Prism::setBottom(double bottom)
-{
-	heightRanges.at(id).first = bottom;
+void Prism::setBottom(double bottom) {
+    heightRanges.at(id).first = bottom;
 }
 
-void Prism::addHeightRange(const int id, double bottom, double top)
-{
-	heightRanges.emplace(id, std::pair<double, double>(bottom, top));
+void Prism::addHeightRange(const int id, double bottom, double top) {
+    heightRanges.insert(make_pair(id, make_pair(bottom, top)));
 }
 
-Polygon Prism::getBase()
-{
-	return base;
+void Prism::addHeightRanges(const std::map<int, std::pair<double, double>> &ranges) {
+    for(auto p : ranges){
+        heightRanges.insert(p);
+    }
 }
 
-Collection<Point2D> Prism::getVertexList() const
-{
-	return base.getVertices();
+Polygon Prism::getBase() {
+    return base;
 }
 
-std::string Prism::toString()
-{
-	std::stringstream result;
-	result << "---------- Polygon [" << id << "] ----------------------\nHeightRanges:\n";
-	for (std::pair<int, std::pair<double, double>> i : heightRanges) {
-		result << "[" << i.first << "] from: " << i.second.first << " to: " << i.second.second << std::endl;
-	}
-	result << "Vertices:\n";
-	for (Point2D p : base.getVertices()) {
-		result << p.toString() << " ";
-	}
-	result << "\n--------------------------------------------------------" << std::endl;
-	return result.str();
+Collection<Point2D> Prism::getVertexList() const {
+    return base.getVertices();
+}
+
+string Prism::toString() {
+    stringstream result;
+    result << "---------- Polygon [" << id << "] ----------------------\nHeightRanges:\n";
+    for (auto i : heightRanges) {
+        result << "[" << i.first << "] from: " << i.second.first << " to: " << i.second.second << endl;
+    }
+    result << "Vertices:\n";
+    for (Point2D p : base.getVertices()) {
+        result << p.toString() << " ";
+    }
+    result << "\n--------------------------------------------------------" << endl;
+    return result.str();
 }
