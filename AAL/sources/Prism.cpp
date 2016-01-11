@@ -110,7 +110,7 @@ Collection<Point2D> Prism::getVertexList() const {
 
 string Prism::toString() {
     stringstream result;
-    result << "---------- Polygon [" << id << "] ----------------------\nHeightRanges:\n";
+    result << "---------- Prism [" << id << "] ----------------------\nHeightRanges:\n";
     for (auto i : heightRanges) {
         result << "[" << i.first << "] from: " << i.second.first << " to: " << i.second.second << endl;
     }
