@@ -56,7 +56,7 @@ public:
     bool intersectableLines(const Line2D &other) const;
 
     /**
-     * Sprawdza czy linie mogą się przecinać
+     * Sprawdza czy odcinki się przecinają
      */
     bool intersectableSegment(const Line2D &other) const;
 

@@ -2,11 +2,14 @@
 // Created by hubert.legec on 2015-12-17.
 //
 
+#include <sstream>
 #include "../headers/EdgeEndpoint.h"
+
+using namespace std;
 
 EdgeEndpoint::EdgeEndpoint() : Point2D() { }
 
-EdgeEndpoint::EdgeEndpoint(Point2D point) : Point2D(point) {
+EdgeEndpoint::EdgeEndpoint(const Point2D& point) : Point2D(point) {
 
 }
 
@@ -15,7 +18,17 @@ EdgeEndpoint::EdgeEndpoint(const EdgeEndpoint &other) : Point2D(other) {
     this->tl = other.tl;
     this->inOut = other.inOut;
     this->inside = other.inside;
-    this->left = left;
+    this->left = other.left;
+    this->secondEndpoint = other.secondEndpoint;
+}
+
+EdgeEndpoint& EdgeEndpoint::operator=(const EdgeEndpoint &other) {
+    Point2D::operator=(other);
+    this->type = other.type;
+    this->tl = other.tl;
+    this->inOut = other.inOut;
+    this->inside = other.inside;
+    this->left = other.left;
     this->secondEndpoint = other.secondEndpoint;
 }
 
@@ -59,10 +72,16 @@ PolygonType EdgeEndpoint::getPolygonType() const {
     return tl;
 }
 
-void EdgeEndpoint::setSecondEndpoint(EdgeEndpoint *secondEndpoint) {
+void EdgeEndpoint::setSecondEndpoint(shared_ptr<EdgeEndpoint> secondEndpoint) {
     this->secondEndpoint = secondEndpoint;
 }
 
-EdgeEndpoint *EdgeEndpoint::getSecondEndpoint() const {
+shared_ptr<EdgeEndpoint> EdgeEndpoint::getSecondEndpoint() const {
     return this->secondEndpoint;
+}
+
+std::string EdgeEndpoint::toString() const {
+    stringstream ss;
+    ss << "EdgeEndpoint[(" << x << ", " << y << "), left:" << left << "]";
+    return ss.str();
 }

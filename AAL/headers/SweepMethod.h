@@ -9,6 +9,7 @@
 #include <queue>
 #include "Prism.h"
 #include "Collection.hpp"
+#include "EdgeEndpoint.h"
 
 class SweepMethod {
 private:
@@ -20,14 +21,16 @@ private:
     bool isValid = false;
 
     double sweepLinePosition;
-    std::priority_queue<> S;
+    std::priority_queue<std::shared_ptr<EdgeEndpoint>, std::vector<std::shared_ptr<EdgeEndpoint>>, EdgeEndpointComparator> Q;
+
+    void initQ();
 public:
     SweepMethod(const Prism& firstPrism, const Prism& secondPrism);
     void doClipping();
-    std::vector<Prism> getIntersectionParts();
-    std::vector<Prism> getFirstPrismParts();
-    std::vector<Prism> getSecondPrismParts();
-    std::vector<Prism> getAllParts();
+    Collection<Prism> getIntersectionParts();
+    Collection<Prism> getFirstPrismParts();
+    Collection<Prism> getSecondPrismParts();
+    Collection<Prism> getAllParts();
 };
 
 

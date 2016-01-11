@@ -22,7 +22,6 @@ target_include_directories(gtest INTERFACE
 
 
 set(AAL_SOURCE_FILES AAL/main.cpp
-                    AAL/sources/Algorithms.cpp
                     AAL/sources/FileIO.cpp
                     AAL/sources/Line2D.cpp
                     AAL/sources/Point2D.cpp
@@ -42,10 +41,10 @@ set(AAL_TEST_FILES AAL/sources/Line2D.cpp
         AAL/sources/Polygon.cpp
         AAL/sources/Prism.cpp
         AAL/sources/Vector2D.cpp
-        AAL/sources/WeilerAtherton.cpp
         AAL/sources/EdgeEndpoint.cpp)
 add_executable(AAL_TESTS AAL_TESTS/weilerAthertonTest.cpp
-                ${AAL_TEST_FILES})
+        AAL/sources/WeilerAtherton.cpp
+        ${AAL_TEST_FILES})
 target_link_libraries(AAL_TESTS gtest_main)
 add_test(NAME aalTest COMMAND aalTest)
 
@@ -62,3 +61,9 @@ add_executable(AAL_GENERATOR_TEST AAL_TESTS/generatorTest.cpp
 
 target_link_libraries(AAL_GENERATOR_TEST gtest_main)
 add_test(NAME generatorTest COMMAND generatorTest)
+
+add_executable(AAL_SWEEP_TEST AAL_TESTS/sweepTest.cpp
+        AAL/sources/SweepMethod.cpp
+        ${AAL_TEST_FILES})
+target_link_libraries(AAL_SWEEP_TEST gtest_main)
+add_test(NAME sweepTest COMMAND sweepTest)

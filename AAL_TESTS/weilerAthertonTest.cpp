@@ -24,12 +24,19 @@ TEST(WeilerAtherton, convexClippingSimpleTest) {
     result.push_back(Point2D(5, 1));
     result.push_back(Point2D(3, 1));
 
+    std::vector<Point2D> firstPart;
+    firstPart.push_back(Point2D(3, 3));
+    firstPart.push_back(Point2D(3, 1));
+    firstPart.push_back(Point2D(1, 1));
+    firstPart.push_back(Point2D(1, 3));
 
     WeilerAtherton w1(Prism(0, 1, 2, pol1), Prism(1, 2, 3, pol2));
     w1.doWeilerAtherton();
 
     ASSERT_EQ(1, w1.getIntersectionParts().getSize());
+    ASSERT_EQ(1, w1.getFirstParts().getSize());
     ASSERT_EQ(result.size(), w1.getIntersectionParts()[0].getBase().getVertices().getSize());
+    ASSERT_EQ(firstPart.size(), w1.getFirstParts()[0].getBase().getVertices().getSize());
     for (Prism p : w1.getIntersectionParts()) {
         int i = 0;
         for (auto v : p.getBase().getVertices()) {
@@ -39,6 +46,7 @@ TEST(WeilerAtherton, convexClippingSimpleTest) {
     }
 
 }
+
 
 TEST(WeilerAtherton, clippingMediumTest) {
     Polygon pol1;
@@ -121,7 +129,6 @@ TEST(WeilerAtherton, clippingMediumTest) {
 }
 
 TEST(WeilerAtherton, clippingSophisticatedTest) {
-    std::cout << "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n";
     Polygon pol1;
     pol1.add(Point2D(8, 2));
     pol1.add(Point2D(2, 2));

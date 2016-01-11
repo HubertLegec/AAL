@@ -72,6 +72,22 @@ void Point2D::setVisited(bool visited) {
     this->visited = visited;
 }
 
+bool Point2D::isFirstPartAdded() const {
+    return firstPartAdded;
+}
+
+void Point2D::setFirstPartAdded(bool firstPartAdded) {
+    this->firstPartAdded = firstPartAdded;
+}
+
+bool Point2D::isSecondPartAdded() const {
+    return secondPartAdded;
+}
+
+void Point2D::setSecondPartAdded(bool secondPartAdded) {
+    this->secondPartAdded = secondPartAdded;
+}
+
 string Point2D::toString() const {
     stringstream result;
     result << "Point2D[(" << x << "," << y << "), isp: " << intersectionPoint << ", v: " << visited << "]";

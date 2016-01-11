@@ -196,6 +196,14 @@ public:
 		return collection[(getIndex(item) + 1) % collection.size()];
 	}
 
+	T& getPrev(const T& item) {
+		int index = getIndex(item) - 1;
+		if(index < 0){
+			index = collection.size() -1;
+		}
+		return collection[index];
+	}
+
 	iterator begin() {
 		return iterator(collection, 0);
 	}

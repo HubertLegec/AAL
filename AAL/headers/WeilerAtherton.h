@@ -20,6 +20,10 @@ private:
 
     Point2D* getStartPoint();
 
+    void addFirstPart(Point2D* point);
+
+    void checkOneInsideAnother();
+
 public:
     WeilerAtherton(const Prism &first, const Prism &second);
 
