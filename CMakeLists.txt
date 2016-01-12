@@ -31,7 +31,7 @@ set(AAL_SOURCE_FILES AAL/main.cpp
                     AAL/sources/UserInterface.cpp
                     AAL/sources/Vector2D.cpp
                     AAL/sources/WeilerAtherton.cpp
-                    AAL/sources/EdgeEndpoint.cpp)
+                    AAL/sources/EdgeEndpoint.cpp AAL/sources/Executor.cpp AAL/headers/Executor.h)
 add_executable(AAL ${AAL_SOURCE_FILES})
 
 

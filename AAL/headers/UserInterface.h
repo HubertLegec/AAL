@@ -23,9 +23,9 @@ private:
 	OutputMode outputMode;
 	std::string inputFile;
 	std::string outputFile;
-	std::string randomInputFile;
 	int numberOfPrisms;
 	int maxVertexesInPrismBase;
+	Prism generatePrismFromRow(string row);
 public:
 	static void getStartInfo();
 	static void getIncorrectCommandLineInfo();
@@ -33,6 +33,9 @@ public:
 	std::vector<Prism> getPrismList();
 	void showResult(const std::vector<Prism>& result);
 	void toString() const;
+	bool fromFile() const;
+	int getNumberOfPrisms() const;
+	int getMaxVertex() const;
 };
 
 #endif
