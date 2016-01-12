@@ -7,6 +7,35 @@
 
 using namespace std;
 
+TempBuffer::TempBuffer() { }
+
+void TempBuffer::erase(shared_ptr<EdgeEndpoint> endpoint) {
+    //TODO
+}
+
+shared_ptr<EdgeEndpoint> TempBuffer::insert(shared_ptr<EdgeEndpoint> endpoint) {
+    //TODO
+    return 0;
+}
+
+shared_ptr<EdgeEndpoint> TempBuffer::find(shared_ptr<EdgeEndpoint> endpoint) {
+    //TODO
+    return 0;
+}
+
+shared_ptr<EdgeEndpoint> TempBuffer::prev(shared_ptr<EdgeEndpoint> endpoint) {
+    //TODO
+    return elements[0];
+}
+
+std::shared_ptr<EdgeEndpoint> TempBuffer::next(shared_ptr<EdgeEndpoint> endpoint) {
+    //TODO
+    return elements[0];
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------------
+
 SweepMethod::SweepMethod(const Prism &firstPrism, const Prism &secondPrism) : firstPrism(firstPrism), secondPrism(secondPrism){
 
 }
@@ -49,13 +78,30 @@ void SweepMethod::doClipping() {
     }
     initQ();
 
-    cout << "Q:\n";
     while(!Q.empty()){
-        auto e = Q.top();
+        auto event = Q.top();
         Q.pop();
-        cout << e->toString() << " ";
+        cout << "POP: " << event->toString() << endl;
+
+        if(event->isLeft()){    //jesli to poczatek odcinka
+            auto pos = S.insert(event);
+            event->setInsideOtherPolygonFlag(S.prev(pos));
+            possibleIntersection(pos, S.next(pos));
+            possibleIntersection(pos, S.prev(pos));
+        } else{ //koniec odcinka
+            auto pos = S.find(event->getSecondEndpoint());
+            auto next = S.next(pos);
+            auto prev = S.prev(pos);
+            if(event->isInside()){
+                addToIntersection(*event->getSecondEndpoint().get(), *event.get());
+            }
+            S.erase(pos);
+            possibleIntersection(prev, next);
+        }
+
+
+
     }
-    cout << endl;
 }
 
 void SweepMethod::initQ() {
@@ -79,4 +125,8 @@ void SweepMethod::initQ() {
         Q.push(ep1);
         Q.push(ep2);
     }
+}
+
+void SweepMethod::possibleIntersection(std::shared_ptr<EdgeEndpoint> fir, std::shared_ptr<EdgeEndpoint> sec) {
+    //TODO
 }

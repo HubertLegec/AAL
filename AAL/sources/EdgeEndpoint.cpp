@@ -15,7 +15,7 @@ EdgeEndpoint::EdgeEndpoint(const Point2D& point) : Point2D(point) {
 
 EdgeEndpoint::EdgeEndpoint(const EdgeEndpoint &other) : Point2D(other) {
     this->type = other.type;
-    this->tl = other.tl;
+    this->pl = other.pl;
     this->inOut = other.inOut;
     this->inside = other.inside;
     this->left = other.left;
@@ -25,7 +25,7 @@ EdgeEndpoint::EdgeEndpoint(const EdgeEndpoint &other) : Point2D(other) {
 EdgeEndpoint& EdgeEndpoint::operator=(const EdgeEndpoint &other) {
     Point2D::operator=(other);
     this->type = other.type;
-    this->tl = other.tl;
+    this->pl = other.pl;
     this->inOut = other.inOut;
     this->inside = other.inside;
     this->left = other.left;
@@ -65,11 +65,11 @@ bool EdgeEndpoint::isLeft() const {
 }
 
 void EdgeEndpoint::setPolygonType(PolygonType tl) {
-    this->tl = tl;
+    this->pl = tl;
 }
 
 PolygonType EdgeEndpoint::getPolygonType() const {
-    return tl;
+    return pl;
 }
 
 void EdgeEndpoint::setSecondEndpoint(shared_ptr<EdgeEndpoint> secondEndpoint) {
@@ -78,6 +78,18 @@ void EdgeEndpoint::setSecondEndpoint(shared_ptr<EdgeEndpoint> secondEndpoint) {
 
 shared_ptr<EdgeEndpoint> EdgeEndpoint::getSecondEndpoint() const {
     return this->secondEndpoint;
+}
+
+void EdgeEndpoint::setInsideOtherPolygonFlag(shared_ptr<EdgeEndpoint> prev) {
+    if(prev == nullptr){
+        inside = inOut = false;
+    } else if(prev->pl == this->pl){
+        inside = prev->inside;
+        inOut = !prev->inOut;
+    } else{
+        inside = !prev->inOut;
+        inOut = prev->inside;
+    }
 }
 
 std::string EdgeEndpoint::toString() const {
