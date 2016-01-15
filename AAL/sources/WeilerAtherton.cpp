@@ -1,10 +1,12 @@
 #include <iostream>
+#include <memory>
 #include "../headers/WeilerAtherton.h"
 #include "../headers/Line2D.h"
 
 using namespace std;
 
 void WeilerAtherton::generateVertexLists() {
+    cout << "->generate vertex list\n";
     vector<Point2D> firstPrismVertices = firstPrism.getVertexList().getItems();
     vector<Point2D> secondPrismVertices = secondPrism.getVertexList().getItems();
     vector<vector<Point2D>> firstTempList(firstPrism.getVertexList().getSize());
@@ -70,6 +72,7 @@ void WeilerAtherton::generateVertexLists() {
 }
 
 void WeilerAtherton::sortIntersections(Point2D &startPoint, vector<Point2D> &list) {
+    cout << "->sort interesections\n";
     /*cout << "startPoint: " << startPoint.toString() << endl;
     cout << "list: ";
     for(auto p : list)
@@ -124,6 +127,7 @@ void WeilerAtherton::doWeilerAtherton() {
     vector<Point2D> *intersectionPart = nullptr;
     //punkty startowe elementow pierwszego wielokata
     vector<Point2D*> firstPartsStartPoints;
+    vector<Point2D*> secondPartsStartPoints;
     bool insideIntersectionFlag = false;
     int switcher = 0;
     int previousSwitcher = 0;
@@ -150,8 +154,9 @@ void WeilerAtherton::doWeilerAtherton() {
             //dodajemy punkt do części wspólnej
             intersectionPart->push_back(*currentPoint);
 
-            //dodajemy czesc pierwszego wielokata do listy
+            //dodajemy czesc pierwszego i drugiego wielokata do listy
             firstPartsStartPoints.push_back(currentPoint);
+            secondPartsStartPoints.push_back(currentPoint);
 
         } else if (insideIntersectionFlag && !currentPoint->isIntersectionPoint()) {
             //idziemy po części wspólnej więc dodajemy kolejne punkty do przecięcia
@@ -205,6 +210,10 @@ void WeilerAtherton::doWeilerAtherton() {
         addFirstPart(p);
     }
 
+    for(Point2D* p : secondPartsStartPoints){
+        addSecondPart(p);
+    }
+
     if (intersectionPart != nullptr) {
         delete intersectionPart;
     }
@@ -250,8 +259,9 @@ void WeilerAtherton::addFirstPart(Point2D* point) {
     int switcher = 0;
     bool first = true;
     vector<Point2D> result;
+    cout << "^^^^^\n";
     do{
-        //cout << "FP: " << currentPoint->toString() << endl;
+        cout << "FP: " << currentPoint->toString() << endl;
         if(currentPoint->isIntersectionPoint()){
             switcher = switcher == 0 ? 1 : 0;
         }
@@ -259,15 +269,47 @@ void WeilerAtherton::addFirstPart(Point2D* point) {
         result.push_back(*currentPoint);
 
         while(currentPoint->isFirstPartAdded() && (first || *currentPoint != *startPoint)){
+            cout << "sw:" << switcher << endl;
             if(switcher == 1) {
                 currentPoint = &(vertexList[switcher].getPrev(*currentPoint));
             } else{
                 currentPoint = &(vertexList[switcher].getNext(*currentPoint));
             }
+            cout << "cp : " << currentPoint->toString() << " fpa:" << currentPoint->isFirstPartAdded() <<  endl;
             first = false;
         }
     }while(*currentPoint != *startPoint);
     firstParts.add(Prism(firstPrism.getId(), firstPrism.getBottom(), firstPrism.getTop(), result));
+}
+
+void WeilerAtherton::addSecondPart(Point2D *point) {
+    if(point->isSecondPartAdded()){
+        return;
+    }
+    Point2D* startPoint = point;
+    Point2D* currentPoint = point;
+    int switcher = 0;
+    bool first = true;
+    vector<Point2D> result;
+    cout << "^^^^^\n";
+    do{
+        cout << "SP: " << currentPoint->toString() << endl;
+        if(currentPoint->isIntersectionPoint()){
+            switcher = switcher == 0 ? 1 : 0;
+        }
+        currentPoint->setSecondPartAdded(true);
+        result.push_back(*currentPoint);
+
+        while (currentPoint->isSecondPartAdded() && (first || *currentPoint != *startPoint)){
+            if(switcher == 1) {
+                currentPoint = &(vertexList[switcher].getNext(*currentPoint));
+            } else{
+                currentPoint = &(vertexList[switcher].getPrev(*currentPoint));
+            }
+            first = false;
+        }
+    }while (*currentPoint != *startPoint);
+    secondParts.add(Prism(secondPrism.getId(), secondPrism.getBottom(), secondPrism.getTop(), result));
 }
 
 void WeilerAtherton::checkOneInsideAnother() {

@@ -17,13 +17,13 @@ Prism::Prism(vector<Point2D> vertexes, int id) {
     this->base.add(vertexes);
 }
 
-Prism::Prism(const int id, double bottom, double top, const Polygon &base) {
+Prism::Prism(const int id, float bottom, float top, const Polygon &base) {
     this->id = id;
     heightRanges.insert(make_pair(id, make_pair(bottom, top)));
     this->base = base;
 }
 
-Prism::Prism(const int id, double bottom, double top, vector<Point2D> vertexes) {
+Prism::Prism(const int id, float bottom, float top, vector<Point2D> vertexes) {
     this->id = id;
     heightRanges.insert(make_pair(id, make_pair(bottom, top)));
     this->base.add(vertexes);
@@ -46,11 +46,11 @@ bool Prism::operator==(const Prism &other) const {
     return id == other.id;
 }
 
-double Prism::getTop() const {
+float Prism::getTop() const {
     return heightRanges.at(id).second;
 }
 
-double Prism::getBottom() const {
+float Prism::getBottom() const {
     return heightRanges.at(id).first;
 }
 
@@ -58,23 +58,23 @@ int Prism::getId() const {
     return id;
 }
 
-map<int, pair<double, double>> Prism::getHeightRanges() const {
+map<int, pair<float, float>> Prism::getHeightRanges() const {
     return heightRanges;
 }
 
-double Prism::getMinX() const {
+float Prism::getMinX() const {
     return base.getMinX();
 }
 
-double Prism::getMaxX() const {
+float Prism::getMaxX() const {
     return base.getMaxX();
 }
 
-double Prism::getMinY() const {
+float Prism::getMinY() const {
     return base.getMinY();
 }
 
-double Prism::getMaxY() const {
+float Prism::getMaxY() const {
     return base.getMaxY();
 }
 
@@ -82,19 +82,19 @@ void Prism::setId(int id) {
     this->id = id;
 }
 
-void Prism::setTop(double top) {
+void Prism::setTop(float top) {
     heightRanges.at(id).second = top;
 }
 
-void Prism::setBottom(double bottom) {
+void Prism::setBottom(float bottom) {
     heightRanges.at(id).first = bottom;
 }
 
-void Prism::addHeightRange(const int id, double bottom, double top) {
+void Prism::addHeightRange(const int id, float bottom, float top) {
     heightRanges.insert(make_pair(id, make_pair(bottom, top)));
 }
 
-void Prism::addHeightRanges(const std::map<int, std::pair<double, double>> &ranges) {
+void Prism::addHeightRanges(const std::map<int, std::pair<float, float>> &ranges) {
     for(auto p : ranges){
         heightRanges.insert(p);
     }

@@ -5,9 +5,7 @@
 
 using namespace std;
 
-Point2D::Point2D(double x, double y, bool intersectionPoint, bool visited) : x(x), y(y),
-                                                                             intersectionPoint(intersectionPoint),
-                                                                             visited(visited) {
+Point2D::Point2D(float x, float y, bool intersectionPoint) : x(x), y(y), intersectionPoint(intersectionPoint) {
 
 }
 
@@ -16,6 +14,8 @@ Point2D::Point2D(const Point2D &other) {
     this->y = other.y;
     this->intersectionPoint = other.intersectionPoint;
     this->visited = other.visited;
+    this->firstPartAdded = other.firstPartAdded;
+    this->secondPartAdded = other.secondPartAdded;
 }
 
 Point2D &Point2D::operator=(const Point2D &other) {
@@ -23,6 +23,8 @@ Point2D &Point2D::operator=(const Point2D &other) {
     this->y = other.y;
     this->intersectionPoint = other.intersectionPoint;
     this->visited = other.visited;
+    this->firstPartAdded = other.firstPartAdded;
+    this->secondPartAdded = other.secondPartAdded;
     return *this;
 }
 
@@ -34,25 +36,25 @@ bool Point2D::operator!=(const Point2D &other) const {
     return !(*this == other);
 }
 
-double Point2D::getDistance(const Point2D &other) const {
-    double dx = other.getX() - x;
-    double dy = other.getY() - y;
+float Point2D::getDistance(const Point2D &other) const {
+    float dx = other.getX() - x;
+    float dy = other.getY() - y;
     return hypot(dx, dy);
 }
 
-void Point2D::setX(double x) {
+void Point2D::setX(float x) {
     this->x = x;
 }
 
-void Point2D::setY(double y) {
+void Point2D::setY(float y) {
     this->y = y;
 }
 
-double Point2D::getX() const {
+float Point2D::getX() const {
     return x;
 }
 
-double Point2D::getY() const {
+float Point2D::getY() const {
     return y;
 }
 

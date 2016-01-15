@@ -7,7 +7,7 @@ Line2D::Line2D() {
 
 }
 
-Line2D::Line2D(double x1, double y1, double x2, double y2) {
+Line2D::Line2D(float x1, float y1, float x2, float y2) {
     this->start = Point2D(x1, y1);
     this->end = Point2D(x2, y2);
 }
@@ -49,10 +49,10 @@ Point2D Line2D::getEnd() const {
 }
 
 bool Line2D::isOnSegment(const Point2D &start, const Point2D &end, const Point2D &pointToCheck) {
-    double x1 = start.getX();
-    double y1 = start.getY();
-    double x2 = end.getX();
-    double y2 = end.getY();
+    float x1 = start.getX();
+    float y1 = start.getY();
+    float x2 = end.getX();
+    float y2 = end.getY();
     if (pointToCheck.getX() <= max(x1, x2) && pointToCheck.getX() >= min(x1, x2)
         && pointToCheck.getY() <= max(y1, y2) && pointToCheck.getY() >= min(y1, y2)) {
         return true;
@@ -76,11 +76,11 @@ bool Line2D::isOnSegment(const Point2D &pointToCheck) const {
 }
 
 bool Line2D::intersectableLines(const Line2D &other) const {
-    double dx1 = end.getX() - start.getX();
-    double dy1 = end.getY() - start.getY();
+    float dx1 = end.getX() - start.getX();
+    float dy1 = end.getY() - start.getY();
 
-    double dx2 = other.end.getX() - other.start.getY();
-    double dy2 = other.end.getY() - other.start.getY();
+    float dx2 = other.end.getX() - other.start.getY();
+    float dy2 = other.end.getY() - other.start.getY();
 
     return (dy1 * dx2 != dx1 * dy2);
 }
@@ -116,22 +116,22 @@ bool Line2D::intersectableSegment(const Line2D &other) const {
     return false;
 }
 
-double Line2D::getSlope() const {
-    double dx = end.getX() - start.getX();
-    double dy = end.getY() - end.getY();
+float Line2D::getSlope() const {
+    float dx = end.getX() - start.getX();
+    float dy = end.getY() - end.getY();
 
     return dy / dx;
 }
 
 Orientation Line2D::getOrientation(const Point2D &point) const {
-    double sx = start.getX();
-    double sy = start.getY();
-    double ex = end.getX();
-    double ey = end.getY();
-    double px = point.getX();
-    double py = point.getY();
+    float sx = start.getX();
+    float sy = start.getY();
+    float ex = end.getX();
+    float ey = end.getY();
+    float px = point.getX();
+    float py = point.getY();
 
-    double result = (ey - sy) * (px - ex) - (ex - sx) * (py - ey);
+    float result = (ey - sy) * (px - ex) - (ex - sx) * (py - ey);
 
     if (result == 0) {
         return Orientation::COLINEAR;
@@ -145,22 +145,22 @@ Orientation Line2D::getOrientation(const Point2D &point) const {
 }
 
 pair<bool, Point2D> Line2D::getIntersectionPoint(const Line2D &other) const {
-    double x1 = start.getX();
-    double y1 = start.getY();
-    double x2 = end.getX();
-    double y2 = end.getY();
-    double x3 = other.start.getX();
-    double y3 = other.start.getY();
-    double x4 = other.end.getX();
-    double y4 = other.end.getY();
+    float x1 = start.getX();
+    float y1 = start.getY();
+    float x2 = end.getX();
+    float y2 = end.getY();
+    float x3 = other.start.getX();
+    float y3 = other.start.getY();
+    float x4 = other.end.getX();
+    float y4 = other.end.getY();
 
-    double d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
+    float d = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4);
     if (d == 0) {
         return pair<bool, Point2D>(false, Point2D());
     }
 
-    double xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
-    double yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
+    float xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
+    float yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
 
 
     if (xi < min(x1, x2) || xi > max(x1, x2)) {

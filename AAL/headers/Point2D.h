@@ -5,18 +5,18 @@
 
 class Point2D {
 protected:
-    double x;
-    double y;
+    float x;
+    float y;
 private:
     bool intersectionPoint;
-    bool visited;
-    bool firstPartAdded;
-    bool secondPartAdded;
+    bool visited = false;
+    bool firstPartAdded = false;
+    bool secondPartAdded = false;
 
 public:
     Point2D() : x(0), y(0), intersectionPoint(false) { };
 
-    Point2D(double x, double y, bool intersectionPoint = false, bool visited = false);
+    Point2D(float x, float y, bool intersectionPoint = false);
 
     Point2D(const Point2D &other);
 
@@ -26,15 +26,15 @@ public:
 
     bool operator!=(const Point2D &other) const;
 
-    double getDistance(const Point2D &other) const;
+    float getDistance(const Point2D &other) const;
 
-    void setX(double x);
+    void setX(float x);
 
-    void setY(double y);
+    void setY(float y);
 
-    double getX() const;
+    float getX() const;
 
-    double getY() const;
+    float getY() const;
 
     bool isIntersectionPoint() const;
 

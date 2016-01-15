@@ -29,10 +29,10 @@ void Polygon::updateMinMax(const vector<Point2D> &vertices) {
 }
 
 Polygon::Polygon() {
-    xMin = numeric_limits<double>::max();
-    yMin = numeric_limits<double>::max();
-    xMax = numeric_limits<double>::min();
-    yMax = numeric_limits<double>::min();
+    xMin = numeric_limits<float>::max();
+    yMin = numeric_limits<float>::max();
+    xMax = numeric_limits<float>::min();
+    yMax = numeric_limits<float>::min();
 }
 
 Polygon::Polygon(const Polygon &other) {
@@ -44,10 +44,10 @@ Polygon::Polygon(const Polygon &other) {
 }
 
 Polygon::Polygon(const Collection<Point2D> &vertices) {
-    xMin = numeric_limits<double>::max();
-    yMin = numeric_limits<double>::max();
-    xMax = numeric_limits<double>::min();
-    yMax = numeric_limits<double>::min();
+    xMin = numeric_limits<float>::max();
+    yMin = numeric_limits<float>::max();
+    xMax = numeric_limits<float>::min();
+    yMax = numeric_limits<float>::min();
     add(vertices);
 }
 
@@ -83,19 +83,19 @@ int Polygon::size() const {
     return vertexList.getSize();
 }
 
-double Polygon::getMinX() const {
+float Polygon::getMinX() const {
     return xMin;
 }
 
-double Polygon::getMinY() const {
+float Polygon::getMinY() const {
     return yMin;
 }
 
-double Polygon::getMaxX() const {
+float Polygon::getMaxX() const {
     return xMax;
 }
 
-double Polygon::getMaxY() const {
+float Polygon::getMaxY() const {
     return yMax;
 }
 

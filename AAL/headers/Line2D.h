@@ -17,7 +17,7 @@ protected:
 public:
     Line2D();
 
-    Line2D(double x1, double y1, double x2, double y2);
+    Line2D(float x1, float y1, float x2, float y2);
 
     Line2D(const Point2D &start, const Point2D &end);
 
@@ -63,7 +63,7 @@ public:
     /**
      * Zwraca nachylenie linii
      */
-    double getSlope() const;
+    float getSlope() const;
 
     /**
      * Zwraca położenie punktu względem linii

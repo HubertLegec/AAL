@@ -9,7 +9,7 @@
 
 class Prism {
 private:
-    std::map<int, std::pair<double, double>> heightRanges;
+    std::map<int, std::pair<float, float>> heightRanges;
     Polygon base;
     int id;
 
@@ -20,9 +20,9 @@ public:
 
     Prism(std::vector<Point2D> vertexes, int id = -1);
 
-    Prism(int id, double bottom, double top, const Polygon &base);
+    Prism(int id, float bottom, float top, const Polygon &base);
 
-    Prism(int id, double bottom, double top, std::vector<Point2D> vertexes);
+    Prism(int id, float bottom, float top, std::vector<Point2D> vertexes);
 
     Prism(const Prism &other);
 
@@ -30,31 +30,31 @@ public:
 
     bool operator==(const Prism &other) const;
 
-    double getTop() const;
+    float getTop() const;
 
-    double getBottom() const;
+    float getBottom() const;
 
     int getId() const;
 
-    std::map<int, std::pair<double, double>> getHeightRanges() const;
+    std::map<int, std::pair<float, float>> getHeightRanges() const;
 
-    double getMinX() const;
+    float getMinX() const;
 
-    double getMaxX() const;
+    float getMaxX() const;
 
-    double getMinY() const;
+    float getMinY() const;
 
-    double getMaxY() const;
+    float getMaxY() const;
 
     void setId(int id);
 
-    void setTop(double top);
+    void setTop(float top);
 
-    void setBottom(double bottom);
+    void setBottom(float bottom);
 
-    void addHeightRange(const int id, const double bottom, const double top);
+    void addHeightRange(const int id, const float bottom, const float top);
 
-    void addHeightRanges(const std::map<int, std::pair<double, double>> &ranges);
+    void addHeightRanges(const std::map<int, std::pair<float, float>> &ranges);
 
     Polygon getBase();
 

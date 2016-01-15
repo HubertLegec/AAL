@@ -22,6 +22,8 @@ private:
 
     void addFirstPart(Point2D* point);
 
+    void addSecondPart(Point2D* point);
+
     void checkOneInsideAnother();
 
 public:

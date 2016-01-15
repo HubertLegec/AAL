@@ -9,10 +9,10 @@
 class Polygon {
 private:
     Collection<Point2D> vertexList;
-    double xMax;
-    double yMax;
-    double xMin;
-    double yMin;
+    float xMax;
+    float yMax;
+    float xMin;
+    float yMin;
 
     void updateMinMax(const Point2D &vertex);
 
@@ -37,13 +37,13 @@ public:
 
     int size() const;
 
-    double getMinX() const;
+    float getMinX() const;
 
-    double getMinY() const;
+    float getMinY() const;
 
-    double getMaxX() const;
+    float getMaxX() const;
 
-    double getMaxY() const;
+    float getMaxY() const;
 
     Point2D &operator[](int index);
 
