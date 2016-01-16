@@ -98,9 +98,6 @@ void SweepMethod::doClipping() {
             S.erase(pos);
             possibleIntersection(prev, next);
         }
-
-
-
     }
 }
 

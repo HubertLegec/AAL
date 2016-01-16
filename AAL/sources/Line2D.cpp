@@ -1,4 +1,6 @@
-#include <c++/sstream>
+#include <sstream>
+#include <cmath>
+#include <limits>
 #include "../headers/Line2D.h"
 
 using namespace std;
@@ -63,7 +65,8 @@ bool Line2D::isOnSegment(const Point2D &start, const Point2D &end, const Point2D
 }
 
 bool Line2D::isOnLine(const Point2D &pointToCheck) const {
-    if (start.getDistance(pointToCheck) + pointToCheck.getDistance(end) == start.getDistance(end)) {
+    float lenght = start.getDistance(end);
+    if (fabs(start.getDistance(pointToCheck) + pointToCheck.getDistance(end) - lenght) <= numeric_limits<float>::epsilon()*lenght) {
         return true;
     }
     else {

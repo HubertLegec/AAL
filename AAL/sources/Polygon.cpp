@@ -128,7 +128,7 @@ bool Polygon::isInside(const Point2D &point) const {
         return false;
     }
 
-    Point2D helperPoint(xMax + 2, 0);
+    Point2D helperPoint(xMax + 2, point.getY());
 
     Line2D testLine(point, helperPoint);
 
@@ -138,7 +138,7 @@ bool Polygon::isInside(const Point2D &point) const {
         next = (next + 1) % vertexList.getSize();
         Line2D line(vertexList[i], vertexList[next]);
 
-        if (line.isOnSegment(point)) {
+        if(line.isOnLine(point)){
             return true;
         }
 
@@ -147,7 +147,6 @@ bool Polygon::isInside(const Point2D &point) const {
             count++;
         }
     }
-
     return count % 2 ? true : false;
 }
 
