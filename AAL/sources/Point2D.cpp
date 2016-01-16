@@ -1,6 +1,7 @@
 #include "../headers/Point2D.h"
 
 #include <cmath>
+#include <limits>
 #include <sstream>
 
 using namespace std;
@@ -94,4 +95,8 @@ string Point2D::toString() const {
     stringstream result;
     result << "Point2D[(" << x << "," << y << "), isp: " << intersectionPoint << ", v: " << visited << "]";
     return result.str();
+}
+
+bool Point2D::approximatelyEqual(float a, float b) {
+    return fabs(a-b) <= max(fabs(a), fabs(b))*numeric_limits<float>::epsilon();
 }

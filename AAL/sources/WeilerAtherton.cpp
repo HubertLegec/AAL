@@ -72,12 +72,7 @@ void WeilerAtherton::generateVertexLists() {
 }
 
 void WeilerAtherton::sortIntersections(Point2D &startPoint, vector<Point2D> &list) {
-    cout << "->sort interesections\n";
-    /*cout << "startPoint: " << startPoint.toString() << endl;
-    cout << "list: ";
-    for(auto p : list)
-        cout << p.toString() << " ";
-    cout << endl;*/
+    //cout << "->sort interesections\n";
     if(list.size() == 0){
         return;
     }
@@ -136,16 +131,18 @@ void WeilerAtherton::doWeilerAtherton() {
     Point2D* currentPoint = getStartPoint();
     Point2D* previousPoint = nullptr;
     Point2D* startPoint = currentPoint;
-    Point2D* intersectionStartPoint;
+    Point2D* intersectionStartPoint = nullptr;
     Point2D* intersectionEndPoint = nullptr;
     do {
         //jeśli wchodzimy z pierwszego wielokąta do wnętrza drugiego
         if (!insideIntersectionFlag && switcher == 0 && currentPoint->isIntersectionPoint()) {
+            cout << "if1\n";
             //ustawiamy flagę, że jesteśmy wewnątrz części wspólnej
             insideIntersectionFlag = true;
             //ustawiamy punkt startowy przecięcia
             intersectionStartPoint = currentPoint;
             firstInters = true;
+            cout << "#fi:" << firstInters << endl;
             //tworzymy nowy fragment części wspólnej
             if (intersectionPart != nullptr) {
                 delete intersectionPart;
@@ -159,10 +156,12 @@ void WeilerAtherton::doWeilerAtherton() {
             secondPartsStartPoints.push_back(currentPoint);
 
         } else if (insideIntersectionFlag && !currentPoint->isIntersectionPoint()) {
+            cout << "if2\n";
             //idziemy po części wspólnej więc dodajemy kolejne punkty do przecięcia
             intersectionPart->push_back(*currentPoint);
 
         } else if (insideIntersectionFlag && switcher == 0 && currentPoint->isIntersectionPoint()) {
+            cout << "if3\n";
             //idąc po pierwszym wielokącie dotarliśmy do kolejnego punktu przecięcia więc przechodzimy na drugi
             switcher = 1;
             if(intersectionEndPoint == nullptr) {
@@ -171,6 +170,7 @@ void WeilerAtherton::doWeilerAtherton() {
             }
             intersectionPart->push_back(*currentPoint);
         } else if (insideIntersectionFlag && switcher == 1 && currentPoint->isIntersectionPoint()) {
+            cout << "if14\n";
             //idąc po drugim wielokącie osiągnęliśmy punkt przecięcia
             if (*currentPoint == *intersectionStartPoint) {
                 //jeśli jest to punkt startowy przecięcia to zamykamy nowy wielokąt i dodajemy nową gotową część przecięcia do listy
@@ -180,6 +180,7 @@ void WeilerAtherton::doWeilerAtherton() {
                 intersectionParts.add(pr);
                 currentPoint = intersectionEndPoint;
                 intersectionEndPoint = nullptr;
+                intersectionStartPoint = nullptr;
                 insideIntersectionFlag = false;
             }
             switcher = 0;
@@ -193,17 +194,21 @@ void WeilerAtherton::doWeilerAtherton() {
             }
         }
         currentPoint->setVisited(true);
-        vertexList[!switcher][vertexList[!switcher].getIndex(*currentPoint)].setVisited(true);
-        //cout << "ODWIEDZONY: " << currentPoint->toString() << " sw: " << switcher << endl;
+        if(currentPoint->isIntersectionPoint()) {
+            vertexList[!switcher][vertexList[!switcher].getIndex(*currentPoint)].setVisited(true);
+        }
+        cout << "ODWIEDZONY: " << currentPoint->toString() << " sw: " << switcher << endl;
         previousPoint = currentPoint;
         previousSwitcher = switcher;
-        while(currentPoint->isVisited() && (first || *currentPoint != *startPoint && (firstInters || *currentPoint != *intersectionStartPoint))) {
-            //cout << "while: cp: " << currentPoint->toString() << " sp: "<< startPoint->toString() <<  endl;
+        while(currentPoint->isVisited()
+              && (first || (*currentPoint != *startPoint))
+              && (intersectionStartPoint == nullptr || firstInters || *currentPoint != *intersectionStartPoint)) {
+            cout << "while: cp: " << currentPoint->toString() << " sp: "<< startPoint->toString() <<  endl;
             currentPoint = &(vertexList[switcher].getNext(*currentPoint));
             first = false;
             firstInters = false;
         }
-        //cout << "POBRANY: " << currentPoint->toString() << endl;
+        cout << "POBRANY: " << currentPoint->toString() << endl;
     } while (*currentPoint != *startPoint);
 
     for(Point2D* p : firstPartsStartPoints){
@@ -246,7 +251,7 @@ Point2D* WeilerAtherton::getStartPoint() {
     while(pointToReturn->isIntersectionPoint() || secondPrism.getBase().isInside(*pointToReturn)){
         pointToReturn = &(vertexList[0].getNext(*pointToReturn));
     }
-    //cout << "start point: " << pointToReturn->toString() << endl;
+    cout << "start point: " << pointToReturn->toString() << endl;
     return pointToReturn;
 }
 

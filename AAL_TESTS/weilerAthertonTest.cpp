@@ -7,9 +7,8 @@
 #include "../AAL/headers/WeilerAtherton.h"
 
 using namespace std;
-
-
 /*
+
 TEST(WeilerAtherton, convexClippingSimpleTest) {
     Polygon pol1;
     pol1.add(Point2D(1, 1));
@@ -68,7 +67,6 @@ TEST(WeilerAtherton, convexClippingSimpleTest) {
     }
 
 }
-*/
 
 
 TEST(WeilerAtherton, clippingMediumTest) {
@@ -84,19 +82,6 @@ TEST(WeilerAtherton, clippingMediumTest) {
     pol2.add(Point2D(4, 4));
     pol2.add(Point2D(9, 4));
     pol2.add(Point2D(9, -1));
-
-    Polygon pol3;
-    pol3.add(Point2D(7, 1));
-    pol3.add(Point2D(1, 11));
-    pol3.add(Point2D(9, 11));
-    pol3.add(Point2D(8, 9));
-    pol3.add(Point2D(4, 8));
-    pol3.add(Point2D(9, 7));
-    Polygon pol4;
-    pol4.add(Point2D(7, 12));
-    pol4.add(Point2D(11, 12));
-    pol4.add(Point2D(11, 5));
-    pol4.add(Point2D(7, 5));
 
     vector<Point2D> result1;
     result1.push_back(Point2D(4, 2.5));
@@ -118,17 +103,6 @@ TEST(WeilerAtherton, clippingMediumTest) {
     firstPart12.push_back(Point2D(1, 3));
     firstPart12.push_back(Point2D(1, 8));
     firstPart12.push_back(Point2D(6, 8));
-
-    vector<Point2D> result21;
-    result21.push_back(Point2D(7, 11));
-    result21.push_back(Point2D(9, 11));
-    result21.push_back(Point2D(8, 9));
-    result21.push_back(Point2D(7, 8.75));
-    vector<Point2D> result22;
-    result22.push_back(Point2D(7, 7.4));
-    result22.push_back(Point2D(9, 7));
-    result22.push_back(Point2D(8 + 1.0 / 3.0, 5));
-    result22.push_back(Point2D(7, 5));
 
 
     WeilerAtherton w1(Prism(0, 1, 2, pol1), Prism(1, 2, 3, pol2));
@@ -154,12 +128,66 @@ TEST(WeilerAtherton, clippingMediumTest) {
         EXPECT_TRUE(firstPart12[i] == w1.getFirstParts()[1].getVertexList()[i]);
     }
 
+}
+
+TEST(WeilerAtherton, clippingMediumTest2){
+    Polygon pol3;
+    pol3.add(Point2D(7, 1));
+    pol3.add(Point2D(1, 11));
+    pol3.add(Point2D(9, 11));
+    pol3.add(Point2D(8, 9));
+    pol3.add(Point2D(4, 8));
+    pol3.add(Point2D(9, 7));
+    Polygon pol4;
+    pol4.add(Point2D(7, 12));
+    pol4.add(Point2D(11, 12));
+    pol4.add(Point2D(11, 5));
+    pol4.add(Point2D(7, 5));
+
+    vector<Point2D> result21;
+    result21.push_back(Point2D(7, 11));
+    result21.push_back(Point2D(9, 11));
+    result21.push_back(Point2D(8, 9));
+    result21.push_back(Point2D(7, 8.75));
+    vector<Point2D> result22;
+    result22.push_back(Point2D(7, 7.4));
+    result22.push_back(Point2D(9, 7));
+    result22.push_back(Point2D(8 + 1.0 / 3.0, 5));
+    result22.push_back(Point2D(7, 5));
+
+    vector<Point2D> firstPart;
+    firstPart.push_back(Point2D(7, 11));
+    firstPart.push_back(Point2D(7, 8.75));
+    firstPart.push_back(Point2D(4, 8));
+    firstPart.push_back(Point2D(7, 7.4));
+    firstPart.push_back(Point2D(7, 5));
+    firstPart.push_back(Point2D(8 + 1.0 / 3.0, 5));
+    firstPart.push_back(Point2D(7, 1));
+    firstPart.push_back(Point2D(1, 11));
+
+    vector<Point2D> secondPart;
+    secondPart.push_back(Point2D(7, 11));
+    secondPart.push_back(Point2D(7, 12));
+    secondPart.push_back(Point2D(11, 12));
+    secondPart.push_back(Point2D(11, 5));
+    secondPart.push_back(Point2D(8 + 1.0 / 3.0, 5));
+    secondPart.push_back(Point2D(9, 7));
+    secondPart.push_back(Point2D(7, 7.4));
+    secondPart.push_back(Point2D(7, 8.75));
+    secondPart.push_back(Point2D(8, 9));
+    secondPart.push_back(Point2D(9, 11));
+
+
 
     WeilerAtherton w2(Prism(2, 1, 2, pol3), Prism(3, 2, 3, pol4));
     w2.doWeilerAtherton();
     ASSERT_EQ(2, w2.getIntersectionParts().getSize());
-    ASSERT_EQ(result21.size(), w2.getIntersectionParts()[0].getBase().getVertices().getSize());
-    ASSERT_EQ(result22.size(), w2.getIntersectionParts()[1].getBase().getVertices().getSize());
+    ASSERT_EQ(1, w2.getFirstParts().getSize());
+    ASSERT_EQ(1, w2.getSecondParts().getSize());
+    ASSERT_EQ(result21.size(), w2.getIntersectionParts()[0].getVertexList().getSize());
+    ASSERT_EQ(result22.size(), w2.getIntersectionParts()[1].getVertexList().getSize());
+    ASSERT_EQ(firstPart.size(), w2.getFirstParts()[0].getVertexList().getSize());
+    ASSERT_EQ(secondPart.size(), w2.getSecondParts()[0].getVertexList().getSize());
     Prism p = w2.getIntersectionParts()[0];
     int i = 0;
     for (auto v : p.getBase().getVertices()) {
@@ -172,9 +200,16 @@ TEST(WeilerAtherton, clippingMediumTest) {
         EXPECT_TRUE(v == result22[i]);
         i++;
     }
-}
 
-/*
+    for(int i = 0; i < firstPart.size(); i++){
+        EXPECT_TRUE(firstPart[i] == w2.getFirstParts()[0].getVertexList()[i]);
+    }
+
+    for(int i = 0; i < secondPart.size(); i++){
+        EXPECT_TRUE(secondPart[i] == w2.getSecondParts()[0].getVertexList()[i]);
+    }
+}
+*/
 
 TEST(WeilerAtherton, clippingSophisticatedTest) {
     Polygon pol1;
@@ -198,23 +233,36 @@ TEST(WeilerAtherton, clippingSophisticatedTest) {
     vector<Point2D> result;
     result.push_back(Point2D(4, 8));
     result.push_back(Point2D(4, 7));
-    result.push_back(Point2D(5, 8));
-    result.push_back(Point2D(4, 4));
-    result.push_back(Point2D(6, 4));
-    result.push_back(Point2D(6, 1));
-    result.push_back(Point2D(4, 1));
-    result.push_back(Point2D(4, 1));
+    result.push_back(Point2D(4.6, 8));
+    result.push_back(Point2D(7.4, 8));
+    result.push_back(Point2D(8, 2));
+    result.push_back(Point2D(4 + 1.0/3.0, 2));
+    result.push_back(Point2D(5, 4));
+    result.push_back(Point2D(3, 8));
 
     vector<Point2D> result2;
-    result2.push_back(Point2D(4, 2.5));
-    result2.push_back(Point2D(5, 3));
-    result2.push_back(Point2D(4, 3));
-    result2.push_back(Point2D(4, 4));
+    result2.push_back(Point2D(5.96552, 10.2759));
+    result2.push_back(Point2D(6.4, 11));
+    result2.push_back(Point2D(7.1, 11));
+    result2.push_back(Point2D(7.27027, 9.2973));
 
     WeilerAtherton w1(Prism(0, 1, 2, pol1), Prism(1, 2, 3, pol2));
     w1.doWeilerAtherton();
     ASSERT_EQ(2, w1.getIntersectionParts().getSize());
     ASSERT_EQ(result.size(), w1.getIntersectionParts()[0].getBase().getVertices().getSize());
     ASSERT_EQ(result2.size(), w1.getIntersectionParts()[1].getBase().getVertices().getSize());
+
+    Prism p = w1.getIntersectionParts()[0];
+    int i = 0;
+    for (auto v : p.getBase().getVertices()) {
+        EXPECT_TRUE(v == result[i]);
+        i++;
+    }
+    Prism p2 = w1.getIntersectionParts()[1];
+    i = 0;
+    for (auto v : p2.getBase().getVertices()) {
+        EXPECT_TRUE(v == result2[i]);
+        i++;
+    }
 }
-*/
+
