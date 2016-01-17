@@ -81,6 +81,8 @@ void TempBuffer::sort(float x) {
         //według rosnącego y drugiego końca krawędzi
         if(eep1->getSecondEndpoint()->getY() < eep2->getSecondEndpoint()->getY()) return true;
 
+        if(eep1->getX() < eep2->getX()) return true;
+
         return false;
     };
     for(int i = 0; i < elements.size() - 1; i++){

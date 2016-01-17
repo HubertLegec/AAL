@@ -171,15 +171,71 @@ void SweepMethod::possibleIntersection(std::shared_ptr<EdgeEndpoint> first, std:
         Q.push(p4);
         Q.push(p1);
         Q.push(p3);
+    } else {
+        if(line1.getOrientation(line2.getEnd()) == Orientation::COLINEAR && line1.getOrientation(line2.getStart()) == Orientation::COLINEAR){
+            cout << "colinear intersection\n";
+            if(line1.getStart() < line2.getStart()){
+                auto firstEnd = first->getSecondEndpoint();
+                auto secondEnd = second->getSecondEndpoint();
+                firstEnd->setSecondEndpoint(second);
+                second->setSecondEndpoint(firstEnd);
+                second->setInside(true);
+                second->getSecondEndpoint()->setInside(true);
+
+                auto newFirstEnd = shared_ptr<EdgeEndpoint>(new EdgeEndpoint(line2.getStart()));
+                newFirstEnd->setInside(first->isInside());
+                newFirstEnd->setInOut(first->isInOut());
+                newFirstEnd->setPolygonType(first->getPolygonType());
+                newFirstEnd->setLeft(false);
+                newFirstEnd->setEdgeType(first->getEdgeType());
+                newFirstEnd->setSecondEndpoint(first);
+                first->setSecondEndpoint(newFirstEnd);
+
+                auto newThirdStart = shared_ptr<EdgeEndpoint>(new EdgeEndpoint(line1.getEnd()));
+                newThirdStart->setInside(secondEnd->isInside());
+                newThirdStart->setInOut(secondEnd->isInOut());
+                newThirdStart->setPolygonType(secondEnd->getPolygonType());
+                newThirdStart->setLeft(true);
+                newThirdStart->setEdgeType(secondEnd->getEdgeType());
+                newThirdStart->setSecondEndpoint(secondEnd);
+
+                Q.push(newFirstEnd);
+                Q.push(newThirdStart);
+            } else {
+                auto firstEnd = first->getSecondEndpoint();
+                auto secondEnd = second->getSecondEndpoint();
+                secondEnd->setSecondEndpoint(first);
+                first->setSecondEndpoint(secondEnd);
+                first->setInside(true);
+                first->getSecondEndpoint()->setInside(true);
+
+                auto newSecondEnd = shared_ptr<EdgeEndpoint>(new EdgeEndpoint(line1.getStart()));
+                newSecondEnd->setInside(second->isInside());
+                newSecondEnd->setInOut(second->isInOut());
+                newSecondEnd->setPolygonType(second->getPolygonType());
+                newSecondEnd->setLeft(false);
+                newSecondEnd->setEdgeType(second->getEdgeType());
+                newSecondEnd->setSecondEndpoint(second);
+                second->setSecondEndpoint(newSecondEnd);
+
+                auto newThirdStart = shared_ptr<EdgeEndpoint>(new EdgeEndpoint(line2.getEnd()));
+                newThirdStart->setInside(firstEnd->isInside());
+                newThirdStart->setInOut(firstEnd->isInOut());
+                newThirdStart->setPolygonType(firstEnd->getPolygonType());
+                newThirdStart->setLeft(true);
+                newThirdStart->setEdgeType(firstEnd->getEdgeType());
+                newThirdStart->setSecondEndpoint(firstEnd);
+
+                Q.push(newSecondEnd);
+                Q.push(newThirdStart);
+            }
+        }
     }
 }
 
 void SweepMethod::addToIntersection(Point2D startPoint, Point2D endPoint) {
     cout << "->add to intersection: " << startPoint.toString() << " " << endPoint.toString() << endl;
     bool added = false;
-    bool front = false;
-    int checkFirst = -1;
-    int checkSecond = -1;
     auto iter = resultPartsBegin.find(startPoint);
     auto p1 = startPoint;
     auto p2 = endPoint;
@@ -192,12 +248,16 @@ void SweepMethod::addToIntersection(Point2D startPoint, Point2D endPoint) {
 
     if(iter != resultPartsBegin.end()){
         auto l = iter->second;
+        added = true;
         if(l->back() == p2){
             vector<Point2D> v;
             for(auto p : *l){
                 v.push_back(p);
             }
-            intersectionParts.add(Prism(v));
+            Prism p(v);
+            p.addHeightRanges(firstPrism.getHeightRanges());
+            p.addHeightRanges(secondPrism.getHeightRanges());
+            intersectionParts.add(p);
             resultPartsBegin.erase(iter);
             resultPartsEnd.erase(p2);
         } else {
@@ -235,13 +295,17 @@ void SweepMethod::addToIntersection(Point2D startPoint, Point2D endPoint) {
         }
 
         if(iter2 != resultPartsEnd.end()){
+            added = true;
             auto l = iter2->second;
             if(l->front() == p22){
                 vector<Point2D> v;
                 for(auto p : *l){
                     v.push_back(p);
                 }
-                intersectionParts.add(Prism(v));
+                Prism p(v);
+                p.addHeightRanges(firstPrism.getHeightRanges());
+                p.addHeightRanges(secondPrism.getHeightRanges());
+                intersectionParts.add(p);
                 resultPartsEnd.erase(iter);
                 resultPartsBegin.erase(p2);
             } else {

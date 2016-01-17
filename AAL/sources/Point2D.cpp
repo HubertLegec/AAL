@@ -30,8 +30,8 @@ Point2D &Point2D::operator=(const Point2D &other) {
 }
 
 bool Point2D::operator==(const Point2D &other) const {
-    return fabs(this->x - other.x) <= numeric_limits<float>::epsilon()*max(1.0f, max(this->x, other.x))*5
-           && fabs(this->y - other.y) <= numeric_limits<float>::epsilon()*max(1.0f, max(this->y, other.y))*5;
+    return fabs(this->x - other.x) <= numeric_limits<float>::epsilon() * max(1.0f, max(this->x, other.x)) * 5
+           && fabs(this->y - other.y) <= numeric_limits<float>::epsilon() * max(1.0f, max(this->y, other.y)) * 5;
 }
 
 bool Point2D::operator!=(const Point2D &other) const {
@@ -39,9 +39,9 @@ bool Point2D::operator!=(const Point2D &other) const {
 }
 
 bool Point2D::operator<(const Point2D &other) const {
-    if(x < other.x) return true;
-    if(x > other.x) return false;
-    if(y > other.y) return true;
+    if (graterThan(other.x, x)) return true;
+    if (graterThan(x, other.x)) return false;
+    if (graterThan(other.y, y)) return true;
     return false;
 }
 
@@ -106,5 +106,10 @@ string Point2D::toString() const {
 }
 
 bool Point2D::approximatelyEqual(float a, float b) {
-    return fabs(a-b) <= max(fabs(a), fabs(b))*numeric_limits<float>::epsilon();
+    return fabs(a - b) <= max(fabs(a), fabs(b)) * numeric_limits<float>::epsilon();
+}
+
+bool Point2D::graterThan(float a, float b) {
+    float eps = max(1.0f, max(fabs(a), fabs(b)));
+    return (a - b) > numeric_limits<float>::epsilon() * eps;
 }

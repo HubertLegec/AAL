@@ -13,7 +13,8 @@ private:
     bool firstPartAdded = false;
     bool secondPartAdded = false;
 
-    bool approximatelyEqual(float a, float b);
+    static bool approximatelyEqual(float a, float b);
+    static bool graterThan(float a, float b);
 public:
     Point2D() : x(0), y(0), intersectionPoint(false) { };
 
