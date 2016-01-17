@@ -6,7 +6,9 @@
 #define RING_EDGEENDPOINT_H
 
 #include <memory>
+#include <limits>
 #include "Point2D.h"
+
 
 enum PolygonType {
     SUBJECT = 0,
@@ -14,7 +16,7 @@ enum PolygonType {
 };
 
 enum EdgeType {
-
+    DEFAULT = 0
 };
 
 class EdgeEndpoint : public Point2D {
@@ -33,6 +35,10 @@ public:
     EdgeEndpoint(const EdgeEndpoint &other);
 
     EdgeEndpoint &operator=(const EdgeEndpoint &other);
+
+    bool operator==(const EdgeEndpoint& other) const;
+
+    bool operator!=(const EdgeEndpoint& other) const;
 
     void setSecondEndpoint(std::shared_ptr<EdgeEndpoint> secondEndpoint);
 
@@ -60,11 +66,13 @@ public:
 
     void setInsideOtherPolygonFlag(std::shared_ptr<EdgeEndpoint> prev);
 
+    float getIntersectionY(float x) const;
+
     std::string toString() const;
 };
 
 struct EdgeEndpointComparator {
-    bool operator()(std::shared_ptr<EdgeEndpoint> eep1, std::shared_ptr<EdgeEndpoint> eep2) {
+    bool operator()(const std::shared_ptr<EdgeEndpoint>& eep1, const std::shared_ptr<EdgeEndpoint>& eep2) {
         //x rosnaco
         if (eep1->getX() > eep2->getX()) return true;
 
@@ -74,6 +82,13 @@ struct EdgeEndpointComparator {
         if (eep1->getY() > eep2->getY()) return true;
 
         if (eep1->getY() < eep2->getY()) return false;
+
+        if(!eep1->isLeft() && eep2->isLeft()) return false;
+
+        if(eep1->isLeft() && !eep2->isLeft()) return true;
+
+        //według rosnącego y drugiego końca krawędzi
+        if(eep1->getSecondEndpoint()->getY() >= eep2->getSecondEndpoint()->getY()) return true;
 
         return false;
     }

@@ -1,5 +1,6 @@
 #include <sstream>
 #include <cmath>
+#include <iostream>
 #include <limits>
 #include "../headers/Line2D.h"
 
@@ -162,17 +163,27 @@ pair<bool, Point2D> Line2D::getIntersectionPoint(const Line2D &other) const {
         return pair<bool, Point2D>(false, Point2D());
     }
 
+    if(start == other.start || start == other.end){
+        return pair<bool, Point2D>(true, start);
+    }
+    if(end == other.start || end == other.end){
+        return pair<bool, Point2D>(true, end);
+    }
+
     float xi = ((x3 - x4) * (x1 * y2 - y1 * x2) - (x1 - x2) * (x3 * y4 - y3 * x4)) / d;
     float yi = ((y3 - y4) * (x1 * y2 - y1 * x2) - (y1 - y2) * (x3 * y4 - y3 * x4)) / d;
 
+    float xEpsilon = numeric_limits<float>::epsilon()*max(1.0f, xi);
+    float yEpsilon = numeric_limits<float>::epsilon()*max(1.0f, yi);
 
-    if (xi < min(x1, x2) || xi > max(x1, x2)) {
+    if (xi + xEpsilon < min(x1, x2) || xi > max(x1, x2) + xEpsilon) {
         return pair<bool, Point2D>(false, Point2D());
-    } else if (xi < min(x3, x4) || xi > max(x3, x4)) {
+    } else if (xi + xEpsilon < min(x3, x4) || xi > max(x3, x4) + xEpsilon) {
         return pair<bool, Point2D>(false, Point2D());
-    } else if(yi < min(y1, y2) || yi > max(y1, y2)){
+    } else if(yi + yEpsilon < min(y1, y2)
+              || yi > max(y1, y2) + yEpsilon){
         return pair<bool, Point2D>(false, Point2D());
-    } else if(yi < min(y3, y4) || yi > max(y3, y4)){
+    } else if(yi + yEpsilon < min(y3, y4) || yi > max(y3, y4) + yEpsilon){
         return pair<bool, Point2D>(false, Point2D());
     } else {
         return pair<bool, Point2D>(true, Point2D(xi, yi));

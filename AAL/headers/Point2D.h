@@ -27,6 +27,8 @@ public:
 
     bool operator!=(const Point2D &other) const;
 
+    bool operator<(const Point2D & other) const;
+
     float getDistance(const Point2D &other) const;
 
     void setX(float x);

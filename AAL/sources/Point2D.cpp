@@ -30,11 +30,19 @@ Point2D &Point2D::operator=(const Point2D &other) {
 }
 
 bool Point2D::operator==(const Point2D &other) const {
-    return (this->x == other.x) && (this->y == other.y);
+    return fabs(this->x - other.x) <= numeric_limits<float>::epsilon()*max(1.0f, max(this->x, other.x))*5
+           && fabs(this->y - other.y) <= numeric_limits<float>::epsilon()*max(1.0f, max(this->y, other.y))*5;
 }
 
 bool Point2D::operator!=(const Point2D &other) const {
     return !(*this == other);
+}
+
+bool Point2D::operator<(const Point2D &other) const {
+    if(x < other.x) return true;
+    if(x > other.x) return false;
+    if(y > other.y) return true;
+    return false;
 }
 
 float Point2D::getDistance(const Point2D &other) const {

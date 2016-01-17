@@ -41,7 +41,8 @@ set(AAL_TEST_FILES AAL/sources/Line2D.cpp
         AAL/sources/Polygon.cpp
         AAL/sources/Prism.cpp
         AAL/sources/Vector2D.cpp
-        AAL/sources/EdgeEndpoint.cpp)
+        AAL/sources/EdgeEndpoint.cpp
+        AAL/sources/TempBuffer.cpp)
 add_executable(AAL_TESTS AAL_TESTS/weilerAthertonTest.cpp
         AAL/sources/WeilerAtherton.cpp
         ${AAL_TEST_FILES})

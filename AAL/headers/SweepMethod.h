@@ -7,22 +7,12 @@
 
 #include <vector>
 #include <queue>
+#include <deque>
 #include "Prism.h"
 #include "Collection.hpp"
 #include "EdgeEndpoint.h"
-
-class TempBuffer{
-private:
-    std::vector<std::shared_ptr<EdgeEndpoint>> elements;
-public:
-    TempBuffer();
-    std::shared_ptr<EdgeEndpoint> insert(std::shared_ptr<EdgeEndpoint> endpoint);
-    std::shared_ptr<EdgeEndpoint> find(std::shared_ptr<EdgeEndpoint> endpoint);
-    std::shared_ptr<EdgeEndpoint> prev(std::shared_ptr<EdgeEndpoint> endpoint);
-    std::shared_ptr<EdgeEndpoint> next(std::shared_ptr<EdgeEndpoint> endpoint);
-    void erase(std::shared_ptr<EdgeEndpoint> endpoint);
-};
-
+#include "TempBuffer.h"
+#include "Line2D.h"
 
 class SweepMethod {
 private:
@@ -31,14 +21,16 @@ private:
     Collection<Prism> intersectionParts;
     Collection<Prism> clippedFirstPrism;
     Collection<Prism> clippedSecondPrism;
-    bool isValid = false;
 
     double sweepLinePosition;
     std::priority_queue<std::shared_ptr<EdgeEndpoint>, std::vector<std::shared_ptr<EdgeEndpoint>>, EdgeEndpointComparator> Q;
     TempBuffer S;
+    std::map<Point2D, std::shared_ptr<std::deque<Point2D>>> resultPartsBegin;
+    std::map<Point2D, std::shared_ptr<std::deque<Point2D>>> resultPartsEnd;
     void initQ();
-    void possibleIntersection(std::shared_ptr<EdgeEndpoint> fir, std::shared_ptr<EdgeEndpoint> sec);
+    void possibleIntersection(std::shared_ptr<EdgeEndpoint> first, std::shared_ptr<EdgeEndpoint> second);
     void addToIntersection(Point2D startPoint, Point2D endPoint);
+    bool isValidIntersection(const Line2D& l1, const Line2D& l2, const Point2D& p, bool result);
 public:
     SweepMethod(const Prism& firstPrism, const Prism& secondPrism);
     void doClipping();

@@ -3,14 +3,27 @@
 //
 
 #include <sstream>
+#include <iostream>
+#include <cmath>
+#include <limits>
 #include "../headers/EdgeEndpoint.h"
 
 using namespace std;
 
-EdgeEndpoint::EdgeEndpoint() : Point2D() { }
+EdgeEndpoint::EdgeEndpoint() : Point2D() {
+    this->left = false;
+    this->inOut = false;
+    this->inside = false;
+    this->pl = SUBJECT;
+    this->type = DEFAULT;
+}
 
 EdgeEndpoint::EdgeEndpoint(const Point2D& point) : Point2D(point) {
-
+    this->left = false;
+    this->inOut = false;
+    this->inside = false;
+    this->pl = SUBJECT;
+    this->type = DEFAULT;
 }
 
 EdgeEndpoint::EdgeEndpoint(const EdgeEndpoint &other) : Point2D(other) {
@@ -81,19 +94,45 @@ shared_ptr<EdgeEndpoint> EdgeEndpoint::getSecondEndpoint() const {
 }
 
 void EdgeEndpoint::setInsideOtherPolygonFlag(shared_ptr<EdgeEndpoint> prev) {
+    //cout << "->setInsideOtherFlags: ";
     if(prev == nullptr){
         inside = inOut = false;
+        secondEndpoint->inside = secondEndpoint->inOut = false;
     } else if(prev->pl == this->pl){
         inside = prev->inside;
+        secondEndpoint->inside = prev->inside;
         inOut = !prev->inOut;
+        secondEndpoint->inOut = !prev->inOut;
     } else{
         inside = !prev->inOut;
+        secondEndpoint->inside = !prev->inOut;
         inOut = prev->inside;
+        secondEndpoint->inOut = prev->inside;
+    }
+    //cout << "inside: " << inside << " inOut: " << inOut << endl;
+}
+
+bool EdgeEndpoint::operator==(const EdgeEndpoint &other) const {
+    return Point2D::operator==(other) && this->left == other.left && this->pl == other.pl;
+}
+
+bool EdgeEndpoint::operator!=(const EdgeEndpoint &other) const {
+    return !(*this == other);
+}
+
+float EdgeEndpoint::getIntersectionY(float x) const {
+    if(fabs(this->x - x) <= numeric_limits<float>::epsilon()){
+        return this->y;
+    } else if(fabs(this->secondEndpoint->x - x) <= numeric_limits<float>::epsilon()){
+        return this->secondEndpoint->x;
+    } else{
+        float dy = (this->y - this->secondEndpoint->y)/(this->x - secondEndpoint->x);
+        return this->y + dy*fabs(this->x - x);
     }
 }
 
 std::string EdgeEndpoint::toString() const {
     stringstream ss;
-    ss << "EdgeEndpoint[(" << x << ", " << y << "), left:" << left << "]";
+    ss << "EdgeEndpoint[(" << x << ", " << y << "), left:" << left << " inside: " << inside << " inOut: " << inOut << " pt: " << pl << "]";
     return ss.str();
 }
