@@ -74,6 +74,10 @@ void TempBuffer::sort(float x) {
 
         if (eep1->getIntersectionY(x) > eep2->getIntersectionY(x)) return false;
 
+        if(eep1->isVertical() && !eep2->isVertical()) return false;
+
+        if(!eep1->isVertical() && eep2->isVertical()) return true;
+
         //według rosnącego y drugiego końca krawędzi
         if(eep1->getSecondEndpoint()->getY() < eep2->getSecondEndpoint()->getY()) return true;
 

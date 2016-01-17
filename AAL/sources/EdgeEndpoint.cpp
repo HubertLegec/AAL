@@ -121,14 +121,23 @@ bool EdgeEndpoint::operator!=(const EdgeEndpoint &other) const {
 }
 
 float EdgeEndpoint::getIntersectionY(float x) const {
-    if(fabs(this->x - x) <= numeric_limits<float>::epsilon()){
+    if(fabs(this->x - x) <= numeric_limits<float>::epsilon()*max(1.0f, max(this->x, x))){
         return this->y;
-    } else if(fabs(this->secondEndpoint->x - x) <= numeric_limits<float>::epsilon()){
+    } else if(fabs(this->secondEndpoint->x - x) <= numeric_limits<float>::epsilon()*max(1.0f, max(this->secondEndpoint->x, x))){
         return this->secondEndpoint->x;
     } else{
         float dy = (this->y - this->secondEndpoint->y)/(this->x - secondEndpoint->x);
         return this->y + dy*fabs(this->x - x);
     }
+}
+
+bool EdgeEndpoint::isVertical() const {
+    if(fabs(x - secondEndpoint->x) <= numeric_limits<float>::epsilon()*max(1.0f, max(x, secondEndpoint->x))){
+        return true;
+    } else {
+        return false;
+    }
+
 }
 
 std::string EdgeEndpoint::toString() const {

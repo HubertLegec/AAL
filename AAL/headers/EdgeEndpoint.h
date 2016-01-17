@@ -7,8 +7,10 @@
 
 #include <memory>
 #include <limits>
+#include <cmath>
 #include "Point2D.h"
 
+using namespace std;
 
 enum PolygonType {
     SUBJECT = 0,
@@ -68,29 +70,70 @@ public:
 
     float getIntersectionY(float x) const;
 
+    bool isVertical() const;
+
     std::string toString() const;
 };
 
 struct EdgeEndpointComparator {
     bool operator()(const std::shared_ptr<EdgeEndpoint>& eep1, const std::shared_ptr<EdgeEndpoint>& eep2) {
         //x rosnaco
-        if (eep1->getX() > eep2->getX()) return true;
+        if (graterThan(eep1->getX(), eep2->getX())) return true;
 
-        if (eep1->getX() < eep2->getX()) return false;
+        if (graterThan(eep2->getX(), eep1->getX())) return false;
 
         //y rosnaco
-        if (eep1->getY() > eep2->getY()) return true;
+        if (graterThan(eep1->getY(), eep2->getY())) return true;
 
-        if (eep1->getY() < eep2->getY()) return false;
+        if (graterThan(eep2->getY(), eep1->getY())) return false;
 
         if(!eep1->isLeft() && eep2->isLeft()) return false;
 
         if(eep1->isLeft() && !eep2->isLeft()) return true;
 
+        if(eep1->isLeft() && eep2->isLeft() && eep1->isVertical() && !eep2->isVertical()){
+            return true;
+        }
+
+        if(eep1->isLeft() && eep2->isLeft() && !eep1->isVertical() && eep2->isVertical()){
+            return false;
+        }
+
+        if(!eep1->isLeft() && !eep2->isLeft() && eep1->isVertical() && !eep2->isVertical()){
+            return false;
+        }
+
+        if(!eep1->isLeft() && !eep2->isLeft() && !eep1->isVertical() && eep2->isVertical()){
+            return true;
+        }
+
+        if(eep1->isLeft() && eep2->isLeft() && eep1->isVertical() && eep2->isVertical()){
+            if(eep1->getSecondEndpoint()->getY() > eep2->getSecondEndpoint()->getY()){
+                return true;
+            }
+            if(eep1->getSecondEndpoint()->getY() < eep2->getSecondEndpoint()->getY()){
+                return false;
+            }
+        }
+
+        if(!eep1->isLeft() && !eep2->isLeft() && eep1->isVertical() && eep2->isVertical()){
+            if(eep1->getSecondEndpoint()->getY() > eep2->getSecondEndpoint()->getY()){
+                return false;
+            }
+            if(eep1->getSecondEndpoint()->getY() < eep2->getSecondEndpoint()->getY()){
+                return true;
+            }
+        }
+
         //według rosnącego y drugiego końca krawędzi
         if(eep1->getSecondEndpoint()->getY() >= eep2->getSecondEndpoint()->getY()) return true;
 
         return false;
+    }
+
+    static bool graterThan(float a, float b){
+        float eps = max(1.0f, max(fabs(a), fabs(b)));
+        return (a - b) > numeric_limits<float>::epsilon()*eps;
     }
 };
 

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-/*
+
 TEST(SweepMethod, simpleTest1){
     Polygon pol1;
     pol1.add(Point2D(1, 6));
@@ -31,9 +31,9 @@ TEST(SweepMethod, simpleTest1){
     }
 
 }
-*/
 
-/*
+
+
 TEST(SweepMethod, simlpeTest2){
     Polygon pol1;
     pol1.add(Point2D(1, 1));
@@ -56,7 +56,8 @@ TEST(SweepMethod, simlpeTest2){
         cout << v.toString() << endl;
     }
 }
-*/
+
+
 
 TEST(SweepMethod, simpleTest3){
     Polygon pol3;
@@ -109,5 +110,7 @@ TEST(SweepMethod, simpleTest3){
     sweepMethod.doClipping();
 
     ASSERT_EQ(2, sweepMethod.getIntersectionParts().getSize());
+    ASSERT_EQ(result21.size(), sweepMethod.getIntersectionParts()[0].getVertexList().getSize());
+    ASSERT_EQ(result22.size(), sweepMethod.getIntersectionParts()[1].getVertexList().getSize());
 
 }
