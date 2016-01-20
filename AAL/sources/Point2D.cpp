@@ -106,7 +106,7 @@ void Point2D::setSecondPartAdded(bool secondPartAdded) {
 
 string Point2D::toString() const {
     stringstream result;
-    result << "Point2D(" << x << "," << y << ")";
+    result << "Point2D(" << x << "," << y << "), inters: " << intersectionPoint << "]";
     return result.str();
 }
 

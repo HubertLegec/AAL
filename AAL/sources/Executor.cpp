@@ -20,8 +20,8 @@ Executor::Executor(std::vector<Prism> input) : input(input), weilerAtherotonTime
 }
 
 void Executor::execute() {
-    executeWeilerAtherton();
-    //executeSweep();
+    //executeWeilerAtherton();
+    executeSweep();
 }
 
 long Executor::getSweepTime() const {

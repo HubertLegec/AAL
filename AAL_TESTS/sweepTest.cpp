@@ -199,7 +199,25 @@ TEST(SweepMethod, mediumTest3){
     ASSERT_EQ(result.size(), sweepMethod.getIntersectionParts()[0].getVertexList().getSize());
 }
 
-/*
+TEST(SweepMethod, insideTest){
+    Polygon pol1;
+    pol1.add(Point2D(1, 1));
+    pol1.add(Point2D(1, 11));
+    pol1.add(Point2D(11, 11));
+    pol1.add(Point2D(11, 1));
+    Polygon pol2;
+    pol2.add(Point2D(3, 3));
+    pol2.add(Point2D(7, 8));
+    pol2.add(Point2D(5, 2));
+
+    SweepMethod sm1(Prism(1, 2, 8, pol1), Prism(2, 5, 12, pol2));
+    sm1.doClipping();
+
+    ASSERT_EQ(1, sm1.getIntersectionParts().getSize());
+    ASSERT_EQ(pol2.getVertices().getSize(), sm1.getIntersectionParts()[0].getVertexList().getSize());
+}
+
+
 TEST(SweepMethod, sophisticatedTest){
     Polygon pol1;
     pol1.add(Point2D(8, 2));
@@ -238,4 +256,4 @@ TEST(SweepMethod, sophisticatedTest){
     sweepMethod.doClipping();
 
     ASSERT_EQ(3, sweepMethod.getIntersectionParts().getSize());
-}*/
+}

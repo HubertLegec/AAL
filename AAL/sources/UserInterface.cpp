@@ -147,11 +147,22 @@ void UserInterface::showResult(const vector<Prism> &result, const vector<Prism> 
             output << endl << "-------------------------------\n";
         }
         if(result2.size() > 0){
+            fstream rawOutput;
+            rawOutput.open("output_sm_raw.txt", ios::out);
             output << "\n----- SWEEP METHOD -----\n";
             for(Prism p : result2){
                 output << p.toString() << endl;
+                rawOutput << "---" << endl;
+                for(auto r : p.getHeightRanges()){
+                    rawOutput << r.first << " " << r.second.first << " " << r.second.second << endl;
+                }
+                for(auto v : p.getVertexList()){
+                    rawOutput << v.getX() << " " << v.getY() << " ";
+                }
+                rawOutput << endl;
             }
 
+            rawOutput.close();
             output << endl << "execution time: " << time2;
             output << endl << "-------------------------------\n";
         }

@@ -13,7 +13,8 @@ long PrismGenerator::id = 0;
 
 PrismGenerator::PrismGenerator() : onlyConvex(false), howMany(100), maxVertexInBase(20) {
     srand(time(NULL));
-    maxRadius = rand() % 100 + 30;
+    minRadius = rand() % 20 + 30;
+    maxRadius = rand() % 100 + minRadius + 2;
     areaRange = howMany*2 < 300 ? howMany*2 : 300;
 }
 
@@ -21,7 +22,8 @@ PrismGenerator::PrismGenerator(bool onlyConvex, int howMany, int maxVertexInBase
                                                                                     howMany(howMany),
                                                                                     maxVertexInBase(maxVertexInBase) {
     srand(time(NULL));
-    maxRadius = rand() % 100 + 30;
+    minRadius = rand() % 20 + 30;
+    maxRadius = rand() % 100 + minRadius + 2;
     areaRange = howMany*2 < 300 ? howMany*2 : 300;
 }
 

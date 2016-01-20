@@ -6,9 +6,10 @@
 #include "gtest/gtest.h"
 
 #include "../AAL/headers/WeilerAtherton.h"
+#include "../AAL/headers/Line2D.h"
 
 using namespace std;
-/*
+
 TEST(WeilerAtherton, convexClippingSimpleTest) {
     Polygon pol1;
     pol1.add(Point2D(1, 1));
@@ -286,7 +287,7 @@ TEST(WeilerAtherton, clippingSophisticatedTest) {
         i++;
     }
 }
-*/
+
 TEST(WeilerAtherton, xTest){
     Polygon pol1;
     pol1.add(Point2D(2, 2));
@@ -295,7 +296,7 @@ TEST(WeilerAtherton, xTest){
     pol1.add(Point2D(8, 2));
     Polygon pol2;
     pol2.add(Point2D(5, 5));
-    pol2.add(Point2D(-2, -2));
+    pol2.add(Point2D(12, -2));
     pol2.add(Point2D(0, 0));
 
     WeilerAtherton wa(Prism(0, 1, 2, pol1), Prism(1, 2, 3, pol2));
@@ -303,4 +304,27 @@ TEST(WeilerAtherton, xTest){
 
     EXPECT_EQ(1, wa.getIntersectionParts().getSize());
     EXPECT_EQ(3, wa.getIntersectionParts()[0].getVertexList().getSize());
+
+}
+
+TEST(WeilerAtherton, yText){
+    Polygon pol1;
+    pol1.add(Point2D(2, 2));
+    pol1.add(Point2D(2, 8));
+    pol1.add(Point2D(8, 8));
+    pol1.add(Point2D(8, 2));
+    Polygon pol2;
+    pol2.add(Point2D(2, 5));
+    pol2.add(Point2D(5, 8));
+    pol2.add(Point2D(8, 5));
+    pol2.add(Point2D(5, 2));
+
+    WeilerAtherton wa(Prism(0, 1, 2, pol1), Prism(1, 2, 3, pol2));
+    wa.doWeilerAtherton();
+
+    EXPECT_EQ(1, wa.getIntersectionParts().getSize());
+    EXPECT_EQ(4, wa.getIntersectionParts()[0].getVertexList().getSize());
+    cout << "RRR\n";
+    cout << wa.getIntersectionParts()[0].toString() << endl;
+
 }

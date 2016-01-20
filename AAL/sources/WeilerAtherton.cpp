@@ -37,6 +37,7 @@ void WeilerAtherton::generateVertexLists() {
                 pair<bool, Point2D> p = firstLine.getIntersectionPoint(secondLine);
                 //jeśli istnieje punkt przecięcia to dodaj nowy wierzchołek
                 if(p.first) {
+                    //cout << "Przeciecie: " << firstLine.toString() << " " << secondLine.toString() << endl;
                     if (p.second == firstLine.getEnd()) {
                         firstPrismVertices[inext]->setIntersectionPoint(true);
                         secondTempList[j].push_back(firstPrismVertices[inext]);
@@ -73,25 +74,14 @@ void WeilerAtherton::generateVertexLists() {
         vertexList[1].add(secondTempList[i]);
     }
 
-    cout << "PO:\n";
-    for(auto p : vertexList[0]){
-        cout << p->toString() << " ";
-    }
-    cout << endl;
-
-    cout << "P1:\n";
-    for(auto p : vertexList[1]){
-        cout << p->toString() << " ";
-    }
-    cout << endl;
-
 }
 
 void WeilerAtherton::sortIntersections(shared_ptr<Point2D> startPoint, vector<shared_ptr<Point2D>> &list) {
     if(list.size() == 0){
         return;
     }
-    else if(list.size() == 1) {
+
+    if(list.size() == 1) {
         if (startPoint == *list.begin()) {
             startPoint->setIntersectionPoint(true);
             list.pop_back();
@@ -113,6 +103,8 @@ void WeilerAtherton::sortIntersections(shared_ptr<Point2D> startPoint, vector<sh
                 }
                 list.pop_back();
             }
+
+            list.erase(unique(list.begin(), list.end()), list.end());
         }
     }
 }
