@@ -1,3 +1,8 @@
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
+
 #ifndef LINE_2D
 #define LINE_2D
 

@@ -1,3 +1,8 @@
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
+
 #include "../headers/Point2D.h"
 
 #include <cmath>
@@ -101,7 +106,7 @@ void Point2D::setSecondPartAdded(bool secondPartAdded) {
 
 string Point2D::toString() const {
     stringstream result;
-    result << "Point2D[(" << x << "," << y << "), isp: " << intersectionPoint << ", v: " << visited << "]";
+    result << "Point2D(" << x << "," << y << ")";
     return result.str();
 }
 

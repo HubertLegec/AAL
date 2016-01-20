@@ -1,3 +1,8 @@
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
+
 #include "../headers/Polygon.h"
 #include "../headers/Line2D.h"
 #include <limits>

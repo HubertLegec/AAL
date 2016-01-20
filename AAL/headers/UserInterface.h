@@ -1,3 +1,8 @@
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
+
 #ifndef USER_INTERFACE
 #define USER_INTERFACE
 
@@ -23,17 +28,21 @@ private:
 	OutputMode outputMode;
 	std::string inputFile;
 	std::string outputFile;
+	std::string generatorFile;
 	int numberOfPrisms;
 	int maxVertexesInPrismBase;
-	Prism generatePrismFromRow(string row);
+	int inputSize;
+	Prism generatePrismFromRow(std::string row);
 public:
 	static void getStartInfo();
 	static void getIncorrectCommandLineInfo();
 	bool parseComandLine(int argc, char *argv[]);
 	std::vector<Prism> getPrismList();
-	void showResult(const std::vector<Prism>& result);
+	void showResult(const std::vector<Prism>& result, const std::vector<Prism>& result2, double time1, double time2);
 	void toString() const;
+	void setInputSize(int size);
 	bool fromFile() const;
+	void saveInput(const std::vector<Prism>& input);
 	int getNumberOfPrisms() const;
 	int getMaxVertex() const;
 };

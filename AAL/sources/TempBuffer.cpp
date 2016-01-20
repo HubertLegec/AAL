@@ -1,6 +1,7 @@
-//
-// Created by hubert.legec on 2016-01-16.
-//
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
 
 #include <iostream>
 #include <sstream>
@@ -19,18 +20,13 @@ void TempBuffer::erase(shared_ptr<EdgeEndpoint> endpoint) {
     if(i < elements.size()) {
         elements.erase(elements.begin() + i);
     } else {
-        cout << "ERASE ERROR!!!\n";
+       // cout << "ERASE ERROR!!!\n";
     }
 }
 
 shared_ptr<EdgeEndpoint> TempBuffer::insert(shared_ptr<EdgeEndpoint> endpoint) {
     elements.push_back(endpoint);
     sort(endpoint->getX());
-        /*cout << "SET: ";
-        for(auto a : elements){
-            cout << a->toString() << " " << a->getSecondEndpoint()->toString() << "; ";
-        }
-        cout << endl;*/
     return endpoint;
 }
 
@@ -51,7 +47,7 @@ shared_ptr<EdgeEndpoint> TempBuffer::prev(shared_ptr<EdgeEndpoint> endpoint) {
     if(i < elements.size()){
         return elements[i-1];
     } else {
-        cout << "PREV ERROR!!!\n";
+        //cout << "PREV ERROR!!!\n";
         return nullptr;
     }
 }

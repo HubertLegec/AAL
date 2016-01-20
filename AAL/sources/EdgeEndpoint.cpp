@@ -1,6 +1,7 @@
-//
-// Created by hubert.legec on 2015-12-17.
-//
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
 
 #include <sstream>
 #include <iostream>

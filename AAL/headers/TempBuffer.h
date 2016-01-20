@@ -1,6 +1,7 @@
-//
-// Created by hubert.legec on 2016-01-16.
-//
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
 
 #ifndef RING_TEMPBUFFER_H
 #define RING_TEMPBUFFER_H

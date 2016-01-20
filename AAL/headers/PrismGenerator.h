@@ -1,3 +1,8 @@
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
+
 #ifndef PRISM_GENERATOR
 #define PRISM_GENERATOR
 
@@ -14,8 +19,8 @@ private:
     int howMany;
     int maxVertexInBase;
     int areaRange;
-    int minRadius = 2;
-    int maxRadius = 3;
+    int minRadius = 20;
+    int maxRadius = 30;
 
     Prism generateConvexSingle() const;
 

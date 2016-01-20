@@ -1,3 +1,8 @@
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
+
 #include "../headers/UserInterface.h"
 #include <iostream>
 #include <c++/fstream>
@@ -11,7 +16,7 @@ void UserInterface::getStartInfo() {
     cout << endl << "----- ------ PRISM INTERSECTION ------ -----" << endl;
     cout << "To run the application you have to put some parameters in command line:" << endl;
     cout << "\t-f <filename>   -   input from text file" << endl;
-    cout << "\t-r <number of prisms> <max number of vertexes in base>  - random input" << endl;
+    cout << "\t-r <number of prisms> <max number of vertexes in base> <filename> - random input" << endl;
     cout <<
     "\t-o <filename> - you can add this flag to save output in file, otherwise it will be shown on the screen" << endl;
     cout << "----- ------ ****************** ------ -----" << endl << endl;
@@ -24,13 +29,11 @@ void UserInterface::getIncorrectCommandLineInfo() {
 
 bool UserInterface::parseComandLine(int argc, char *argv[]) {
     int argCounter = 1;
-    cout << "argv1: " << argv[argCounter] << endl;
     if (string(argv[argCounter]) == string("-f")) {
         argCounter++;
         if (argCounter < argc) {
             inputFile = string(argv[argCounter++]);
             inputMode = InputMode::FROM_FILE;
-            cout << "test: " << argc << " - " << argCounter << endl;
             if (argCounter == argc) {
                 return true;
             }
@@ -42,10 +45,11 @@ bool UserInterface::parseComandLine(int argc, char *argv[]) {
     }
     else if (string(argv[argCounter]) == string("-r")) {
         argCounter++;
-        if (argCounter + 2 < argc) {
+        if (argCounter + 3 < argc) {
             inputMode = InputMode::RANDOM;
             numberOfPrisms = atoi(argv[argCounter++]);
             maxVertexesInPrismBase = atoi(argv[argCounter++]);
+            generatorFile = string(argv[argCounter++]);
             if (argCounter == argc) {
                 outputMode = OutputMode::SCREEN;
                 return true;
@@ -96,8 +100,64 @@ vector<Prism> UserInterface::getPrismList() {
     return result;
 }
 
-void UserInterface::showResult(const vector<Prism> &result) {
+void UserInterface::showResult(const vector<Prism> &result, const vector<Prism> & result2, double time1, double time2) {
+    if(outputMode == OutputMode::SCREEN){
+        if(result.size() > 0){
+            cout << "----- WEILER ATHERTON -----\n";
+            for(Prism p : result){
+                cout << p.toString() << endl;
+            }
 
+            cout << endl << "input size: " << inputSize;
+            cout << endl << "execution time: " << time1;
+            cout << endl << "-------------------------------\n";
+        }
+        if(result2.size() > 0){
+            cout << "----- SWEEP METHOD -----\n";
+            for(Prism p : result2){
+                cout << p.toString() << endl;
+            }
+
+            cout << endl << "input size: " << inputSize;
+            cout << endl << "execution time: " << time2;
+            cout << endl << "-------------------------------\n";
+        }
+    } else {
+        fstream output;
+        output.open(outputFile, ios::out);
+        if(result.size() > 0){
+            fstream rawOutput;
+            rawOutput.open("output_wa_raw.txt", ios::out);
+            output << "\n----- WEILER ATHERTON -----\n";
+            for(Prism p : result){
+                output << p.toString() << endl;
+                rawOutput << "---" << endl;
+                for(auto r : p.getHeightRanges()){
+                    rawOutput << r.first << " " << r.second.first << " " << r.second.second << endl;
+                }
+                for(auto v : p.getVertexList()){
+                    rawOutput << v.getX() << " " << v.getY() << " ";
+                }
+                rawOutput << endl;
+            }
+
+            rawOutput.close();
+            output << endl << "execution time: " << time1;
+            cout << "weiler atherton time: " << time1 << endl;
+            output << endl << "-------------------------------\n";
+        }
+        if(result2.size() > 0){
+            output << "\n----- SWEEP METHOD -----\n";
+            for(Prism p : result2){
+                output << p.toString() << endl;
+            }
+
+            output << endl << "execution time: " << time2;
+            output << endl << "-------------------------------\n";
+        }
+
+        output.close();
+    }
 }
 
 Prism UserInterface::generatePrismFromRow(string row) {
@@ -110,13 +170,10 @@ Prism UserInterface::generatePrismFromRow(string row) {
     ss >> top;
     vector<Point2D> vertices;
     while(!ss.eof()){
-        ss.ignore(2, '(');
         double x;
         ss >> x;
-        ss.ignore(1, ',');
         double y;
         ss >> y;
-        ss.ignore(1, ')');
         vertices.push_back(Point2D(x, y));
     }
     return Prism(id, bottom, top, vertices);
@@ -132,4 +189,25 @@ int UserInterface::getNumberOfPrisms() const {
 
 int UserInterface::getMaxVertex() const {
     return maxVertexesInPrismBase;
+}
+
+void UserInterface::setInputSize(int size) {
+    this->inputSize = size;
+}
+
+void UserInterface::saveInput(const std::vector<Prism> &input) {
+    fstream file;
+    fstream file2;
+    file2.open("generator_raw.txt", ios::out);
+    file.open(generatorFile, ios::out);
+    for(Prism p : input){
+        file << p.toString() << endl;
+        file2 << p.getId() << " " << p.getHeightRanges().at(p.getId()).first << " " << p.getHeightRanges().at(p.getId()).second;
+        for(Point2D pt : p.getVertexList()){
+            file2 << " " << pt.getX() << " " << pt.getY();
+        }
+        file2 << endl;
+    }
+    file.close();
+    file2.close();
 }

@@ -1,14 +1,14 @@
-//
-// Created by hubert.legec on 2015-12-10.
-//
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
 
 #include "gtest/gtest.h"
 
 #include "../AAL/headers/WeilerAtherton.h"
 
 using namespace std;
-
-
+/*
 TEST(WeilerAtherton, convexClippingSimpleTest) {
     Polygon pol1;
     pol1.add(Point2D(1, 1));
@@ -67,7 +67,6 @@ TEST(WeilerAtherton, convexClippingSimpleTest) {
     }
 
 }
-
 
 TEST(WeilerAtherton, clippingMediumTest) {
     Polygon pol1;
@@ -286,4 +285,22 @@ TEST(WeilerAtherton, clippingSophisticatedTest) {
         EXPECT_TRUE(v == result2[i] || i == 0 || i == 3);
         i++;
     }
+}
+*/
+TEST(WeilerAtherton, xTest){
+    Polygon pol1;
+    pol1.add(Point2D(2, 2));
+    pol1.add(Point2D(2, 8));
+    pol1.add(Point2D(8, 8));
+    pol1.add(Point2D(8, 2));
+    Polygon pol2;
+    pol2.add(Point2D(5, 5));
+    pol2.add(Point2D(-2, -2));
+    pol2.add(Point2D(0, 0));
+
+    WeilerAtherton wa(Prism(0, 1, 2, pol1), Prism(1, 2, 3, pol2));
+    wa.doWeilerAtherton();
+
+    EXPECT_EQ(1, wa.getIntersectionParts().getSize());
+    EXPECT_EQ(3, wa.getIntersectionParts()[0].getVertexList().getSize());
 }

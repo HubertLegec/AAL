@@ -1,3 +1,8 @@
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
+
 #include <iostream>
 #include <memory>
 #include "../headers/WeilerAtherton.h"
@@ -68,19 +73,18 @@ void WeilerAtherton::generateVertexLists() {
         vertexList[1].add(secondTempList[i]);
     }
 
-    /*cout << "1 vertexList[0]" << endl;
-    for(auto v : vertexList[0]){
-        cout << v->toString() << " ";
+    cout << "PO:\n";
+    for(auto p : vertexList[0]){
+        cout << p->toString() << " ";
     }
-
     cout << endl;
 
-    cout << "1 vertexList[1]" << endl;
-    for(auto v : vertexList[1]){
-        cout << v->toString() << " ";
+    cout << "P1:\n";
+    for(auto p : vertexList[1]){
+        cout << p->toString() << " ";
     }
+    cout << endl;
 
-    cout << endl;*/
 }
 
 void WeilerAtherton::sortIntersections(shared_ptr<Point2D> startPoint, vector<shared_ptr<Point2D>> &list) {
@@ -126,6 +130,34 @@ void WeilerAtherton::doWeilerAtherton() {
 
     if(vertexList[0].getSize() == firstPrism.getVertexList().getSize() && vertexList[1].getSize() == secondPrism.getVertexList().getSize()){
         checkOneInsideAnother();
+        return;
+    }
+
+    bool firstInsideSecond = true;
+
+    for(auto v : vertexList[0].getItems()){
+        if(!secondPrism.getBase().isInside(*v)){
+            firstInsideSecond = false;
+            break;
+        }
+    }
+
+    if(firstInsideSecond){
+        intersectionParts.add(firstPrism);
+        return;
+    }
+
+    bool secondInsideFirst = true;
+
+    for(auto v : vertexList[1].getItems()){
+        if(!firstPrism.getBase().isInside(*v)){
+            secondInsideFirst = false;
+            break;
+        }
+    }
+
+    if(secondInsideFirst){
+        intersectionParts.add(secondPrism);
         return;
     }
 

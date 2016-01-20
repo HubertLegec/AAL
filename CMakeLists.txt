@@ -22,7 +22,6 @@ target_include_directories(gtest INTERFACE
 
 
 set(AAL_SOURCE_FILES AAL/main.cpp
-                    AAL/sources/FileIO.cpp
                     AAL/sources/Line2D.cpp
                     AAL/sources/Point2D.cpp
                     AAL/sources/Polygon.cpp
@@ -31,7 +30,8 @@ set(AAL_SOURCE_FILES AAL/main.cpp
                     AAL/sources/UserInterface.cpp
                     AAL/sources/Vector2D.cpp
                     AAL/sources/WeilerAtherton.cpp
-                    AAL/sources/EdgeEndpoint.cpp AAL/sources/Executor.cpp AAL/headers/Executor.h AAL/sources/TempBuffer.cpp AAL/headers/TempBuffer.h)
+                    AAL/sources/SweepMethod.cpp
+                    AAL/sources/EdgeEndpoint.cpp AAL/sources/Executor.cpp AAL/headers/Executor.h AAL/sources/TempBuffer.cpp AAL/headers/TempBuffer.h AAL/headers/Timer.h)
 add_executable(AAL ${AAL_SOURCE_FILES})
 
 
@@ -68,3 +68,12 @@ add_executable(AAL_SWEEP_TEST AAL_TESTS/sweepTest.cpp
         ${AAL_TEST_FILES})
 target_link_libraries(AAL_SWEEP_TEST gtest_main)
 add_test(NAME sweepTest COMMAND sweepTest)
+
+add_executable(AAL_EXECUTOR_TEST AAL_TESTS/executorTest.cpp
+        AAL/sources/PrismGenerator.cpp
+        AAL/sources/Executor.cpp
+        AAL/sources/WeilerAtherton.cpp
+        AAL/sources/SweepMethod.cpp
+        ${AAL_TEST_FILES})
+target_link_libraries(AAL_EXECUTOR_TEST gtest_main)
+add_test(NAME executorTest COMMAND executorTest)

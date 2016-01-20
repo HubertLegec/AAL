@@ -1,18 +1,23 @@
-Hubert Legêæ
+Hubert Legï¿½ï¿½
 nr albumu: 261461
 e-mail: hlegec@stud.elka.pw.edu.pl
 
 
 Polecenie:
 
-W przestrzeni trójwymiarowej zdefiniowany jest zbiór graniastos³upów, o poziomych podstawach, bêd¹cych wielok¹tami dowolnymi.
-Graniastos³upy nie musz¹ byæ roz³¹czne. Dokonaæ wzajemnego podzia³u graniastos³upów w kierunku pionowym wzd³u¿ p³aszczyzn zawieraj¹cych ich œciany boczne
-(ka¿de dwa graniastos³upy, których rzuty poziome na siebie nachodz¹, powinny siê wzajemnie rozcinaæ wzd³u¿ swoich œcian bocznych nawet jeœli maj¹ roz³¹czne zakresy wysokoœci).
-Dane wyjœciowe powinny byæ uporz¹dkowane tak, aby dla ka¿dego obszaru na p³aszczyŸnie poziomej prezentowana by³a lista zakresów pionowych le¿¹cych nad nim graniastos³upów.
-Porównaæ czas obliczeñ i wyniki ró¿nych metod.
+W przestrzeni trÃ³jwymiarowej zdefiniowany jest zbiÃ³r graniastosÅ‚upÃ³w, o poziomych podstawach, bÄ™dÄ…cych wielokÄ…tami dowolnymi.
+GraniastosÅ‚upy nie muszÄ… byÄ‡ rozÅ‚Ä…czne. DokonaÄ‡ wzajemnego podziaÅ‚u graniastosÅ‚upÃ³w w kierunku pionowym wzdÅ‚uÅ¼ pÅ‚aszczyzn zawierajÄ…cych ich Å›ciany boczne
+(kaÅ¼de dwa graniastosÅ‚upy, ktÃ³rych rzuty poziome na siebie nachodzÄ…, powinny siÄ™ wzajemnie rozcinaÄ‡ wzdÅ‚uÅ¼ swoich Å›cian bocznych nawet jeÅ›li majÄ… rozÅ‚Ä…czne zakresy wysokoÅ›ci).
+Dane wyjÅ›ciowe powinny byÄ‡ uporzÄ…dkowane tak, aby dla kaÅ¼dego obszaru na pÅ‚aszczyÅºnie poziomej prezentowana byÅ‚a lista zakresÃ³w pionowych leÅ¼Ä…cych nad nim graniastosÅ‚upÃ³w.
+PorÃ³wnaÄ‡ czas obliczeÅ„ i wyniki rÃ³Å¼nych metod.
+
+Uruchomienie programu:
+1. flaga "-f <nazwa pliku>"      -     wejÅ›cie z pliku tekstowego
+2. flaga "-r <liczba graniastosÅ‚upÃ³w> <maksymalna liczba wierzchoÅ‚kÃ³w>"    -    generator losowy zadanej liczby graniastosÅ‚upÃ³w o maksymalnej liczbie wierzoÅ‚kÃ³w
+3. flaga "-o <nazwa pliku>"    -    przekierowanie rezultatu do pliku o podanej nazwie
 
 
-Struktura pliku wejœciowego:
-1.Ka¿da linia odpowiada jednemu graniastos³upowi.
+Struktura pliku wejÅ›ciowego:
+1.KaÅ¼da linia odpowiada jednemu graniastosÅ‚upowi.
 2.Struktura linii:
-	wspolrzedna_z_dolna,wspolrzedna_z_gorna; x1,y1; x2,y2; x3,y3; .....
+	id wspolrzedna_z_dolna wspolrzedna_z_gorna x1 y1 x2 y2 x3 y3 .....

@@ -1,6 +1,7 @@
-//
-// Created by hubert.legec on 2016-01-13.
-//
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
 
 #ifndef RING_EXECUTOR_H
 #define RING_EXECUTOR_H
@@ -15,6 +16,8 @@ private:
     std::vector<Prism> sweepOutput;
     long weilerAtherotonTime;
     long sweepTime;
+    void executeWeilerAtherton();
+    void executeSweep();
 public:
     Executor(std::vector<Prism> input);
     void execute();

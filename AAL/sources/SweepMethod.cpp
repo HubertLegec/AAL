@@ -1,6 +1,7 @@
-//
-// Created by hubert.legec on 2015-12-16.
-//
+/*
+ * Przecięcia graniastosłupów AAL
+ * Hubert Legęć nr albumu: 261461
+ */
 
 #include <iostream>
 #include "../headers/SweepMethod.h"
@@ -36,27 +37,16 @@ Collection<Prism> SweepMethod::getAllParts() {
 void SweepMethod::doClipping() {
     initQ();
 
-    /*while(!Q.empty()){
-        cout << Q.top()->toString() << " " << Q.top()->getSecondEndpoint()->toString() << endl;
-        Q.pop();
-    }
-    cout << endl;
-    return;*/
-
     while(!Q.empty()){
-        cout << S.toString();
         auto event = Q.top();
         Q.pop();
-        cout << "POP: " << event->toString() << " " << event->getSecondEndpoint()->toString() << endl;
 
         if(event->isLeft()){    //jesli to poczatek odcinka
-            cout << "is left\n";
             auto pos = S.insert(event);
             event->setInsideOtherPolygonFlag(S.prev(pos));
             possibleIntersection(pos, S.next(pos));
             possibleIntersection(pos, S.prev(pos));
         } else{ //koniec odcinka
-            cout << "is right\n";
             S.sort(event->getX());
             auto next = S.next(event->getSecondEndpoint());
             auto prev = S.prev(event->getSecondEndpoint());
@@ -114,13 +104,10 @@ void SweepMethod::possibleIntersection(std::shared_ptr<EdgeEndpoint> first, std:
     if(first == nullptr || second == nullptr){
         return;
     }
-    cout << "->possible intersections: ";
     Line2D line1(*first, *first->getSecondEndpoint());
     Line2D line2(*second, *second->getSecondEndpoint());
-    cout << line1.toString() << " io: " << first->isInOut() << " ins: " << first->isInside() <<  " ; " << line2.toString() << " io: " << second->isInOut() << " ins: " << second->isInside() << endl;
     auto intersection = line1.getIntersectionPoint(line2);
     if(isValidIntersection(line1, line2, intersection.second, intersection.first)){
-        cout << "->valid inters: " << intersection.second.toString() << endl;
 
         auto firstEnd = first->getSecondEndpoint();
         firstEnd->setInside(!firstEnd->isInside());
@@ -166,14 +153,12 @@ void SweepMethod::possibleIntersection(std::shared_ptr<EdgeEndpoint> first, std:
         p4->setPolygonType(second->getPolygonType());
         second->setSecondEndpoint(p4);
 
-        //cout << "P1: " << p1->toString() << " P2: " << p2->toString() << " P3: " << p3->toString() << " P4: " << p4->toString() << endl;
         Q.push(p2);
         Q.push(p4);
         Q.push(p1);
         Q.push(p3);
     } else {
         if(line1.getOrientation(line2.getEnd()) == Orientation::COLINEAR && line1.getOrientation(line2.getStart()) == Orientation::COLINEAR){
-            cout << "colinear intersection\n";
             if(line1.getStart() < line2.getStart()){
                 auto firstEnd = first->getSecondEndpoint();
                 auto secondEnd = second->getSecondEndpoint();
@@ -234,7 +219,6 @@ void SweepMethod::possibleIntersection(std::shared_ptr<EdgeEndpoint> first, std:
 }
 
 void SweepMethod::addToIntersection(Point2D startPoint, Point2D endPoint) {
-    cout << "->add to intersection: " << startPoint.toString() << " " << endPoint.toString() << endl;
     bool added = false;
     auto iter = resultPartsBegin.find(startPoint);
     auto p1 = startPoint;
@@ -336,7 +320,6 @@ void SweepMethod::addToIntersection(Point2D startPoint, Point2D endPoint) {
 
 
     if(!added){
-        cout << "new result element created\n";
         auto newD = make_shared<deque<Point2D>>();
         newD->push_back(startPoint);
         newD->push_back(endPoint);
