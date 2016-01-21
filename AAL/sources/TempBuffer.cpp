@@ -37,7 +37,7 @@ shared_ptr<EdgeEndpoint> TempBuffer::prev(shared_ptr<EdgeEndpoint> endpoint) {
     //cout << "begin: " << (*elements.begin())->toString() << " " << *elements.begin()  << endl;
 
     if(elements[0] == endpoint){
-       // cout << "return prev nullptr\n";
+        cout << "return prev nullptr\n";
         return nullptr;
     }
     int i = 1;
@@ -47,14 +47,14 @@ shared_ptr<EdgeEndpoint> TempBuffer::prev(shared_ptr<EdgeEndpoint> endpoint) {
     if(i < elements.size()){
         return elements[i-1];
     } else {
-        //cout << "PREV ERROR!!!\n";
+        cout << "PREV ERROR!!!\n";
         return nullptr;
     }
 }
 
-std::shared_ptr<EdgeEndpoint> TempBuffer::next(shared_ptr<EdgeEndpoint> endpoint) {
+shared_ptr<EdgeEndpoint> TempBuffer::next(shared_ptr<EdgeEndpoint> endpoint) {
     int i = 0;
-    while(elements[i] != endpoint && i < elements.size()){
+    while(elements[i] != endpoint && i < elements.size() - 1){
         i++;
     }
     if(i == elements.size() - 1){
@@ -81,6 +81,7 @@ void TempBuffer::sort(float x) {
 
         return false;
     };
+
     for(int i = 0; i < elements.size() - 1; i++){
         for(int j = 0; j < elements.size() - 1; j++){
             if(!comp(elements[j], elements[j+1])){
@@ -90,7 +91,7 @@ void TempBuffer::sort(float x) {
     }
 }
 
-std::string TempBuffer::toString() const {
+string TempBuffer::toString() const {
     stringstream ss;
     ss << "--- TEMP BUFFER: size: " << elements.size() << "---\n";
     for(auto a : elements){

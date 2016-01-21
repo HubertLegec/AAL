@@ -18,7 +18,6 @@ private:
     Collection<Prism> intersectionParts;
     Collection<Prism> firstParts;
     Collection<Prism> secondParts;
-    bool valid;
 
     void generateVertexLists();
 

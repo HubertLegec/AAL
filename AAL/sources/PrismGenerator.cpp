@@ -50,7 +50,6 @@ vector<Prism> PrismGenerator::generate() const {
             result.push_back(generateRandomSingle());
         }
     }
-
     return result;
 }
 

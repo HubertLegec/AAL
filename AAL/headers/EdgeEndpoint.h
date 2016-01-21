@@ -18,9 +18,6 @@ enum PolygonType {
     CLIPPING = 1
 };
 
-enum EdgeType {
-    DEFAULT = 0
-};
 
 class EdgeEndpoint : public Point2D {
 private:
@@ -28,12 +25,13 @@ private:
     bool left;
     bool inOut;
     bool inside;
-    EdgeType type;
     PolygonType pl;
 public:
     EdgeEndpoint();
 
     EdgeEndpoint(const Point2D &point);
+
+    EdgeEndpoint(const Point2D &point, PolygonType polType);
 
     EdgeEndpoint(const EdgeEndpoint &other);
 
@@ -59,10 +57,6 @@ public:
 
     bool isInside() const;
 
-    void setEdgeType(EdgeType type);
-
-    EdgeType getEdgeType() const;
-
     void setPolygonType(PolygonType pl);
 
     PolygonType getPolygonType() const;
@@ -72,6 +66,10 @@ public:
     float getIntersectionY(float x) const;
 
     bool isVertical() const;
+
+    bool isToTheLeftOf(const EdgeEndpoint& other) const;
+
+    void joinToExistingEnd(std::shared_ptr<EdgeEndpoint>& other);
 
     std::string toString() const;
 };

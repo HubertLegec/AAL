@@ -65,7 +65,6 @@ void WeilerAtherton::generateVertexLists() {
         sortIntersections(firstPrismVertices[i], firstTempList[i]);
         vertexList[0].add(firstPrismVertices[i]);
         vertexList[0].add(firstTempList[i]);
-
     }
 
     for (int i = 0; i < secondPrism.getVertexList().getSize(); i++) {
@@ -95,7 +94,7 @@ void WeilerAtherton::sortIntersections(shared_ptr<Point2D> startPoint, vector<sh
                     list[j + 1] = p;
                 }
             }
-
+        }
             if(startPoint == list[0]){
                 startPoint->setIntersectionPoint(true);
                 for(int i = 0; i < list.size() - 1; i++){
@@ -105,18 +104,14 @@ void WeilerAtherton::sortIntersections(shared_ptr<Point2D> startPoint, vector<sh
             }
 
             list.erase(unique(list.begin(), list.end()), list.end());
-        }
     }
 }
 
-WeilerAtherton::WeilerAtherton(const Prism &first, const Prism &second) : firstPrism(first), secondPrism(second), valid(false) {
+WeilerAtherton::WeilerAtherton(const Prism &first, const Prism &second) : firstPrism(first), secondPrism(second) {
 
 }
 
 void WeilerAtherton::doWeilerAtherton() {
-    if (valid) {
-        return;
-    }
 
     generateVertexLists();
 
@@ -244,7 +239,6 @@ void WeilerAtherton::doWeilerAtherton() {
         delete intersectionPart;
     }
 
-    valid = true;
 }
 
 Collection<Prism> WeilerAtherton::getFirstParts() {

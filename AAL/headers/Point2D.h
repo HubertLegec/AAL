@@ -12,14 +12,15 @@ class Point2D {
 protected:
     float x;
     float y;
+
+    static bool approximatelyEqual(float a, float b);
+    static bool graterThan(float a, float b);
 private:
     bool intersectionPoint;
     bool visited = false;
     bool firstPartAdded = false;
     bool secondPartAdded = false;
 
-    static bool approximatelyEqual(float a, float b);
-    static bool graterThan(float a, float b);
 public:
     Point2D() : x(0), y(0), intersectionPoint(false) { };
 

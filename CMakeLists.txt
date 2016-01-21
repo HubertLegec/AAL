@@ -22,16 +22,18 @@ target_include_directories(gtest INTERFACE
 
 
 set(AAL_SOURCE_FILES AAL/main.cpp
-                    AAL/sources/Line2D.cpp
-                    AAL/sources/Point2D.cpp
-                    AAL/sources/Polygon.cpp
-                    AAL/sources/Prism.cpp
-                    AAL/sources/PrismGenerator.cpp
-                    AAL/sources/UserInterface.cpp
-                    AAL/sources/Vector2D.cpp
-                    AAL/sources/WeilerAtherton.cpp
-                    AAL/sources/SweepMethod.cpp
-                    AAL/sources/EdgeEndpoint.cpp AAL/sources/Executor.cpp AAL/headers/Executor.h AAL/sources/TempBuffer.cpp AAL/headers/TempBuffer.h AAL/headers/Timer.h)
+        AAL/sources/Line2D.cpp
+        AAL/sources/Point2D.cpp
+        AAL/sources/Polygon.cpp
+        AAL/sources/Prism.cpp
+        AAL/sources/PrismGenerator.cpp
+        AAL/sources/UserInterface.cpp
+        AAL/sources/Vector2D.cpp
+        AAL/sources/WeilerAtherton.cpp
+        AAL/sources/SweepMethod.cpp
+        AAL/sources/EdgeEndpoint.cpp AAL/sources/Executor.cpp
+        AAL/sources/TempBuffer.cpp
+        AAL/headers/Timer.h)
 add_executable(AAL ${AAL_SOURCE_FILES})
 
 

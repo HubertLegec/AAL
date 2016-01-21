@@ -16,7 +16,6 @@ EdgeEndpoint::EdgeEndpoint() : Point2D() {
     this->inOut = false;
     this->inside = false;
     this->pl = SUBJECT;
-    this->type = DEFAULT;
 }
 
 EdgeEndpoint::EdgeEndpoint(const Point2D& point) : Point2D(point) {
@@ -24,11 +23,16 @@ EdgeEndpoint::EdgeEndpoint(const Point2D& point) : Point2D(point) {
     this->inOut = false;
     this->inside = false;
     this->pl = SUBJECT;
-    this->type = DEFAULT;
+}
+
+EdgeEndpoint::EdgeEndpoint(const Point2D &point, PolygonType polType) : Point2D(point) {
+    this->pl = polType;
+    this->left = false;
+    this->inOut = false;
+    this->inside = false;
 }
 
 EdgeEndpoint::EdgeEndpoint(const EdgeEndpoint &other) : Point2D(other) {
-    this->type = other.type;
     this->pl = other.pl;
     this->inOut = other.inOut;
     this->inside = other.inside;
@@ -38,20 +42,11 @@ EdgeEndpoint::EdgeEndpoint(const EdgeEndpoint &other) : Point2D(other) {
 
 EdgeEndpoint& EdgeEndpoint::operator=(const EdgeEndpoint &other) {
     Point2D::operator=(other);
-    this->type = other.type;
     this->pl = other.pl;
     this->inOut = other.inOut;
     this->inside = other.inside;
     this->left = other.left;
     this->secondEndpoint = other.secondEndpoint;
-}
-
-void EdgeEndpoint::setEdgeType(EdgeType type) {
-    this->type = type;
-}
-
-EdgeType EdgeEndpoint::getEdgeType() const {
-    return type;
 }
 
 void EdgeEndpoint::setInOut(bool inOut) {
@@ -122,9 +117,9 @@ bool EdgeEndpoint::operator!=(const EdgeEndpoint &other) const {
 }
 
 float EdgeEndpoint::getIntersectionY(float x) const {
-    if(fabs(this->x - x) <= numeric_limits<float>::epsilon()*max(1.0f, max(this->x, x))){
+    if(approximatelyEqual(this->x, x)){
         return this->y;
-    } else if(fabs(this->secondEndpoint->x - x) <= numeric_limits<float>::epsilon()*max(1.0f, max(this->secondEndpoint->x, x))){
+    } else if(approximatelyEqual(this->secondEndpoint->x, x)){
         return this->secondEndpoint->x;
     } else{
         float dy = (this->y - this->secondEndpoint->y)/(this->x - secondEndpoint->x);
@@ -133,15 +128,22 @@ float EdgeEndpoint::getIntersectionY(float x) const {
 }
 
 bool EdgeEndpoint::isVertical() const {
-    if(fabs(x - secondEndpoint->x) <= numeric_limits<float>::epsilon()*max(1.0f, max(x, secondEndpoint->x))){
-        return true;
-    } else {
-        return false;
-    }
-
+    return approximatelyEqual(x, secondEndpoint->x) ? true : false;
 }
 
-std::string EdgeEndpoint::toString() const {
+bool EdgeEndpoint::isToTheLeftOf(const EdgeEndpoint &other) const {
+    return graterThan(other.x, this->x)  || (approximatelyEqual(this->x, other.x) && graterThan(other.y, this->y));
+}
+
+void EdgeEndpoint::joinToExistingEnd(std::shared_ptr<EdgeEndpoint> &other) {
+    inside = other->inside;
+    inOut = other->inOut;
+    pl = other->pl;
+    left = !other->left;
+    secondEndpoint = other;
+}
+
+string EdgeEndpoint::toString() const {
     stringstream ss;
     ss << "EdgeEndpoint[(" << x << ", " << y << "), left:" << left << " inside: " << inside << " inOut: " << inOut << " pt: " << pl << "]";
     return ss.str();

@@ -7,8 +7,8 @@
 
 #include "../headers/Line2D.h"
 
-ShuterlandHodgman::ShuterlandHodgman(const Prism& first, const Prism& second) : firstPrism(first), secondPrism(second)
-{
+ShuterlandHodgman::ShuterlandHodgman(const Prism& first, const Prism& second) : firstPrism(first), secondPrism(second) {
+
 }
 
 void ShuterlandHodgman::doIntersection()
