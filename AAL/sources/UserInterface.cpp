@@ -5,8 +5,9 @@
 
 #include "../headers/UserInterface.h"
 #include <iostream>
-#include <c++/fstream>
-#include <c++/sstream>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
 
 
 using namespace std;
@@ -17,6 +18,8 @@ void UserInterface::getStartInfo() {
     cout << "To run the application you have to put some parameters in command line:" << endl;
     cout << "\t-f <filename>   -   input from text file" << endl;
     cout << "\t-r <number of prisms> <max number of vertexes in base> <filename> - random input" << endl;
+    cout << "\t-tv <number of prisms> <min num of vertices> <steeps> - test mode, run in loop steeps times" << endl;
+    cout << "\t-tp <max number of vertices> <min num of prisms> <steeps> - test mode, run in loop steeps times" << endl;
     cout <<
     "\t-o <filename> - you can add this flag to save output in file, otherwise it will be shown on the screen" << endl;
     cout << "----- ------ ****************** ------ -----" << endl << endl;
@@ -37,15 +40,13 @@ bool UserInterface::parseComandLine(int argc, char *argv[]) {
             if (argCounter == argc) {
                 return true;
             }
-        }
-        else {
+        } else {
             outputMode = OutputMode::SCREEN;
             return false;
         }
-    }
-    else if (string(argv[argCounter]) == string("-r")) {
+    } else if (string(argv[argCounter]) == string("-r")) {
         argCounter++;
-        if (argCounter + 3 < argc) {
+        if (argCounter + 3 <= argc) {
             inputMode = InputMode::RANDOM;
             numberOfPrisms = atoi(argv[argCounter++]);
             maxVertexesInPrismBase = atoi(argv[argCounter++]);
@@ -54,27 +55,44 @@ bool UserInterface::parseComandLine(int argc, char *argv[]) {
                 outputMode = OutputMode::SCREEN;
                 return true;
             }
-        }
-        else {
+        } else {
             return false;
         }
-    }
-    else {
+    } else if(string(argv[argCounter]) == string("-tv")){
+        argCounter++;
+        if (argCounter + 3 <= argc) {
+            inputMode = InputMode::TEST_VERTICES;
+            numberOfPrisms = atoi(argv[argCounter++]);
+            maxVertexesInPrismBase = atoi(argv[argCounter++]);
+            steeps = atoi(argv[argCounter++]);
+            return true;
+        } else {
+            return false;
+        }
+    } else if(string(argv[argCounter]) == string("-tp")){
+        argCounter++;
+        if (argCounter + 3 <= argc) {
+            inputMode = InputMode::TEST_PRISMS;
+            maxVertexesInPrismBase = atoi(argv[argCounter++]);
+            numberOfPrisms = atoi(argv[argCounter++]);
+            steeps = atoi(argv[argCounter++]);
+            return true;
+        } else {
+            return false;
+        }
+    } else {
         return false;
     }
-    if (string(argv[argCounter++]) == string("-o") && argCounter < argc) {
+    if (argCounter < argc && string(argv[argCounter++]) == string("-o")) {
         outputFile = string(argv[argCounter++]);
         outputMode = OutputMode::TO_FILE;
         if (argCounter == argc) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
-    else {
-        return false;
-    }
+    return true;
 }
 
 void UserInterface::toString() const {
@@ -194,6 +212,14 @@ bool UserInterface::fromFile() const {
     return inputMode == FROM_FILE;
 }
 
+bool UserInterface::prismsTest() const {
+    return inputMode == TEST_PRISMS;
+}
+
+bool UserInterface::verticesTest() const {
+    return inputMode == TEST_VERTICES;
+}
+
 int UserInterface::getNumberOfPrisms() const {
     return numberOfPrisms;
 }
@@ -222,4 +248,43 @@ void UserInterface::saveInput(const std::vector<Prism> &input) {
     }
     file.close();
     file2.close();
+}
+
+void UserInterface::addResult(long size, long waTime, long smTime) {
+    shared_ptr<long> dataSet(new long[3]);
+    dataSet.get()[0] = size;
+    dataSet.get()[1] = waTime;
+    dataSet.get()[2] = smTime;
+    testResults.push_back(dataSet);
+}
+
+void UserInterface::showTestResults(int algorithm, int complexity) {
+    cout << "WYNIKI POMIAROW ";
+    if(algorithm == 0){
+        cout << "WEILER-ATHERTON:\n";
+    } else {
+        cout << "SWEEP METHOD:\n";
+    }
+    cout.width(45);
+    cout << setw(15) << setiosflags(ios::left) << "rozmiar danych";
+    cout << setw(15) << setiosflags(ios::left) << "czas";
+    cout << setw(15) << setiosflags(ios::left) << "parametr q";
+    cout << endl;
+
+    double tMed = testResults.at(testResults.size() / 2).get()[1 + algorithm];
+    double TMed = pow(testResults.at(testResults.size() / 2).get()[0], complexity);
+    for (unsigned long i = 0; i < testResults.size(); ++i) {
+        const long *dataSet = testResults.at(i).get();
+        cout << setw(15) << setiosflags(ios::left) << dataSet[0];
+        cout << setw(15) << setiosflags(ios::left) << dataSet[1+ algorithm];
+        double T = pow(dataSet[0], complexity);
+        double q = (dataSet[1+algorithm] * TMed) / (T * tMed);
+        cout << setw(15) << setiosflags(ios::left) << q;
+        cout << endl;
+    }
+    cout << endl;
+}
+
+int UserInterface::getSteeps() const {
+    return steeps;
 }

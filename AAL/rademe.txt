@@ -21,3 +21,7 @@ Struktura pliku wejściowego:
 1.Każda linia odpowiada jednemu graniastosłupowi.
 2.Struktura linii:
 	id wspolrzedna_z_dolna wspolrzedna_z_gorna x1 y1 x2 y2 x3 y3 .....
+
+Dane generowane losowo są zapisywane do pliku o nazwie podanej przez użytkownika, oraz do pliku generator_raw.txt, który może być załadowany do aplikacji graficznej prezentującej rezultaty.
+Podobnie oprócz pliku z danymi wyjściowymi o nazwie podanej przez użytkownika powstają pliki output_wa_raw.txt oraz output_sm_raw.txt służące do prezentacji wyników.
+
