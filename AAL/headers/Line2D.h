@@ -19,6 +19,9 @@ class Line2D {
 protected:
     Point2D start;
     Point2D end;
+
+    static bool approximatelyEqual(float a, float b);
+    static bool graterThan(float a, float b);
 public:
     Line2D();
 

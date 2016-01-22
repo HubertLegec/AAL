@@ -72,7 +72,7 @@ bool Line2D::isOnSegment(const Point2D &start, const Point2D &end, const Point2D
 
 bool Line2D::isOnLine(const Point2D &pointToCheck) const {
     float lenght = start.getDistance(end);
-    if (fabs(start.getDistance(pointToCheck) + pointToCheck.getDistance(end) - lenght) <= numeric_limits<float>::epsilon()*lenght) {
+    if (approximatelyEqual(start.getDistance(pointToCheck) + pointToCheck.getDistance(end), lenght)) {
         return true;
     }
     else {
@@ -199,4 +199,13 @@ std::string Line2D::toString() const {
     stringstream ss;
     ss << "Line2D[" << start.toString() << ", " << end.toString() << "]";
     return ss.str();
+}
+
+bool Line2D::approximatelyEqual(float a, float b) {
+    return fabs(a - b) <= max(1.0f, max(fabs(a), fabs(b))) * numeric_limits<float>::epsilon();
+}
+
+bool Line2D::graterThan(float a, float b) {
+    float eps = max(1.0f, max(fabs(a), fabs(b)));
+    return (a - b) > numeric_limits<float>::epsilon() * eps;
 }

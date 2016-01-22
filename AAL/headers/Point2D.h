@@ -18,8 +18,6 @@ protected:
 private:
     bool intersectionPoint;
     bool visited = false;
-    bool firstPartAdded = false;
-    bool secondPartAdded = false;
 
 public:
     Point2D() : x(0), y(0), intersectionPoint(false) { };
@@ -53,14 +51,6 @@ public:
     bool isVisited() const;
 
     void setVisited(bool visited);
-
-    bool isFirstPartAdded() const;
-
-    void setFirstPartAdded(bool firstPartAdded);
-
-    bool isSecondPartAdded() const;
-
-    void setSecondPartAdded(bool secondPartAdded);
 
     std::string toString() const;
 };

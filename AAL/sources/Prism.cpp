@@ -3,7 +3,7 @@
  * Hubert Legęć nr albumu: 261461
  */
 
-#include <c++/sstream>
+#include <sstream>
 #include "../headers/Prism.h"
 
 using namespace std;
@@ -100,7 +100,7 @@ void Prism::addHeightRange(const int id, float bottom, float top) {
 }
 
 void Prism::addHeightRanges(const std::map<int, std::pair<float, float>> &ranges) {
-    for(auto p : ranges){
+    for (auto p : ranges) {
         heightRanges.insert(p);
     }
 }

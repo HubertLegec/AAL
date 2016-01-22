@@ -40,8 +40,6 @@ public:
 
     void add(const Collection<Point2D> &vertices);
 
-    int size() const;
-
     float getMinX() const;
 
     float getMinY() const;

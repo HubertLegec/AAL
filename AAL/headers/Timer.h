@@ -9,14 +9,16 @@
 #include <iostream>
 #include <chrono>
 
-class Timer
-{
+class Timer {
 public:
-    Timer() : beg_(clock_::now()) {}
+    Timer() : beg_(clock_::now()) { }
+
     void reset() { beg_ = clock_::now(); }
-    double elapsed() const { 
+
+    double elapsed() const {
         return std::chrono::duration_cast<msecond_>
-            (clock_::now() - beg_).count(); }
+                (clock_::now() - beg_).count();
+    }
 
 private:
     typedef std::chrono::high_resolution_clock clock_;

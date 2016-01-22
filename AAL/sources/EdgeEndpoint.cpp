@@ -18,7 +18,7 @@ EdgeEndpoint::EdgeEndpoint() : Point2D() {
     this->pl = SUBJECT;
 }
 
-EdgeEndpoint::EdgeEndpoint(const Point2D& point) : Point2D(point) {
+EdgeEndpoint::EdgeEndpoint(const Point2D &point) : Point2D(point) {
     this->left = false;
     this->inOut = false;
     this->inside = false;
@@ -40,7 +40,7 @@ EdgeEndpoint::EdgeEndpoint(const EdgeEndpoint &other) : Point2D(other) {
     this->secondEndpoint = other.secondEndpoint;
 }
 
-EdgeEndpoint& EdgeEndpoint::operator=(const EdgeEndpoint &other) {
+EdgeEndpoint &EdgeEndpoint::operator=(const EdgeEndpoint &other) {
     Point2D::operator=(other);
     this->pl = other.pl;
     this->inOut = other.inOut;
@@ -90,22 +90,20 @@ shared_ptr<EdgeEndpoint> EdgeEndpoint::getSecondEndpoint() const {
 }
 
 void EdgeEndpoint::setInsideOtherPolygonFlag(shared_ptr<EdgeEndpoint> prev) {
-    //cout << "->setInsideOtherFlags: ";
-    if(prev == nullptr){
+    if (prev == nullptr) {
         inside = inOut = false;
         secondEndpoint->inside = secondEndpoint->inOut = false;
-    } else if(prev->pl == this->pl){
+    } else if (prev->pl == this->pl) {
         inside = prev->inside;
         secondEndpoint->inside = prev->inside;
         inOut = !prev->inOut;
         secondEndpoint->inOut = !prev->inOut;
-    } else{
+    } else {
         inside = !prev->inOut;
         secondEndpoint->inside = !prev->inOut;
         inOut = prev->inside;
         secondEndpoint->inOut = prev->inside;
     }
-    //cout << "inside: " << inside << " inOut: " << inOut << endl;
 }
 
 bool EdgeEndpoint::operator==(const EdgeEndpoint &other) const {
@@ -117,13 +115,13 @@ bool EdgeEndpoint::operator!=(const EdgeEndpoint &other) const {
 }
 
 float EdgeEndpoint::getIntersectionY(float x) const {
-    if(approximatelyEqual(this->x, x)){
+    if (approximatelyEqual(this->x, x)) {
         return this->y;
-    } else if(approximatelyEqual(this->secondEndpoint->x, x)){
+    } else if (approximatelyEqual(this->secondEndpoint->x, x)) {
         return this->secondEndpoint->x;
-    } else{
-        float dy = (this->y - this->secondEndpoint->y)/(this->x - secondEndpoint->x);
-        return this->y + dy*fabs(this->x - x);
+    } else {
+        float dy = (this->y - this->secondEndpoint->y) / (this->x - secondEndpoint->x);
+        return this->y + dy * fabs(this->x - x);
     }
 }
 
@@ -132,7 +130,7 @@ bool EdgeEndpoint::isVertical() const {
 }
 
 bool EdgeEndpoint::isToTheLeftOf(const EdgeEndpoint &other) const {
-    return graterThan(other.x, this->x)  || (approximatelyEqual(this->x, other.x) && graterThan(other.y, this->y));
+    return graterThan(other.x, this->x) || (approximatelyEqual(this->x, other.x) && graterThan(other.y, this->y));
 }
 
 void EdgeEndpoint::joinToExistingEnd(std::shared_ptr<EdgeEndpoint> &other) {
@@ -145,6 +143,7 @@ void EdgeEndpoint::joinToExistingEnd(std::shared_ptr<EdgeEndpoint> &other) {
 
 string EdgeEndpoint::toString() const {
     stringstream ss;
-    ss << "EdgeEndpoint[(" << x << ", " << y << "), left:" << left << " inside: " << inside << " inOut: " << inOut << " pt: " << pl << "]";
+    ss << "EdgeEndpoint[(" << x << ", " << y << "), left:" << left << " inside: " << inside << " inOut: " << inOut <<
+    " pt: " << pl << "]";
     return ss.str();
 }

@@ -9,8 +9,8 @@
 using namespace std;
 
 
-
-SweepMethod::SweepMethod(const Prism &firstPrism, const Prism &secondPrism) : firstPrism(firstPrism), secondPrism(secondPrism){
+SweepMethod::SweepMethod(const Prism &firstPrism, const Prism &secondPrism) : firstPrism(firstPrism),
+                                                                              secondPrism(secondPrism) {
 
 }
 
@@ -37,21 +37,20 @@ Collection<Prism> SweepMethod::getAllParts() {
 void SweepMethod::doClipping() {
     initQ();
 
-    while(!Q.empty()){
-        cout << S.toString() << endl;
+    while (!Q.empty()) {
         auto event = Q.top();
         Q.pop();
 
-        if(event->isLeft()){    //jesli to poczatek odcinka
+        if (event->isLeft()) {    //jesli to poczatek odcinka
             auto pos = S.insert(event);
             event->setInsideOtherPolygonFlag(S.prev(pos));
             possibleIntersection(pos, S.next(pos));
             possibleIntersection(pos, S.prev(pos));
-        } else{ //koniec odcinka
+        } else { //koniec odcinka
             S.sort(event->getX());
             auto next = S.next(event->getSecondEndpoint());
             auto prev = S.prev(event->getSecondEndpoint());
-            if(event->isInside()){
+            if (event->isInside()) {
                 addToIntersection(*event->getSecondEndpoint().get(), *event.get());
             }
             S.erase(event->getSecondEndpoint());
@@ -64,12 +63,13 @@ void SweepMethod::initQ() {
     vector<Point2D> firstPrismVertices = firstPrism.getVertexList().getItems();
     vector<Point2D> secondPrismVertices = secondPrism.getVertexList().getItems();
 
-    for(int i = 0; i < firstPrismVertices.size(); i++){
+    for (int i = 0; i < firstPrismVertices.size(); i++) {
         auto ep1 = shared_ptr<EdgeEndpoint>(new EdgeEndpoint(firstPrismVertices[i], PolygonType::SUBJECT));
-        auto ep2 = shared_ptr<EdgeEndpoint>(new EdgeEndpoint(firstPrismVertices[(i+1) % firstPrismVertices.size()], PolygonType::SUBJECT));
+        auto ep2 = shared_ptr<EdgeEndpoint>(
+                new EdgeEndpoint(firstPrismVertices[(i + 1) % firstPrismVertices.size()], PolygonType::SUBJECT));
         ep1->setSecondEndpoint(ep2);
         ep2->setSecondEndpoint(ep1);
-        if(ep1->isToTheLeftOf(*ep2)){
+        if (ep1->isToTheLeftOf(*ep2)) {
             ep1->setLeft(true);
             ep2->setLeft(false);
         } else {
@@ -80,12 +80,13 @@ void SweepMethod::initQ() {
         Q.push(ep2);
     }
 
-    for(int i = 0; i < secondPrismVertices.size(); i++){
+    for (int i = 0; i < secondPrismVertices.size(); i++) {
         auto ep1 = shared_ptr<EdgeEndpoint>(new EdgeEndpoint(secondPrismVertices[i], PolygonType::CLIPPING));
-        auto ep2 = shared_ptr<EdgeEndpoint>(new EdgeEndpoint(secondPrismVertices[(i+1) % secondPrismVertices.size()], PolygonType::CLIPPING));
+        auto ep2 = shared_ptr<EdgeEndpoint>(
+                new EdgeEndpoint(secondPrismVertices[(i + 1) % secondPrismVertices.size()], PolygonType::CLIPPING));
         ep1->setSecondEndpoint(ep2);
         ep2->setSecondEndpoint(ep1);
-        if(ep1->isToTheLeftOf(*ep2)){
+        if (ep1->isToTheLeftOf(*ep2)) {
             ep1->setLeft(true);
             ep2->setLeft(false);
         } else {
@@ -98,13 +99,13 @@ void SweepMethod::initQ() {
 }
 
 void SweepMethod::possibleIntersection(std::shared_ptr<EdgeEndpoint> first, std::shared_ptr<EdgeEndpoint> second) {
-    if(first == nullptr || second == nullptr){
+    if (first == nullptr || second == nullptr) {
         return;
     }
     Line2D line1(*first, *first->getSecondEndpoint());
     Line2D line2(*second, *second->getSecondEndpoint());
     auto intersection = line1.getIntersectionPoint(line2);
-    if(isValidIntersection(line1, line2, intersection.second, intersection.first)){
+    if (isValidIntersection(line1, line2, intersection.second, intersection.first)) {
 
         auto firstEnd = first->getSecondEndpoint();
         firstEnd->setInside(!firstEnd->isInside());
@@ -131,8 +132,9 @@ void SweepMethod::possibleIntersection(std::shared_ptr<EdgeEndpoint> first, std:
         Q.push(p1);
         Q.push(p3);
     } else {
-        if(line1.getOrientation(line2.getEnd()) == Orientation::COLINEAR && line1.getOrientation(line2.getStart()) == Orientation::COLINEAR){
-            if(line1.getStart() < line2.getStart()){
+        if (line1.getOrientation(line2.getEnd()) == Orientation::COLINEAR &&
+            line1.getOrientation(line2.getStart()) == Orientation::COLINEAR) {
+            if (line1.getStart() < line2.getStart()) {
                 auto firstEnd = first->getSecondEndpoint();
                 auto secondEnd = second->getSecondEndpoint();
                 firstEnd->setSecondEndpoint(second);
@@ -174,144 +176,100 @@ void SweepMethod::possibleIntersection(std::shared_ptr<EdgeEndpoint> first, std:
 }
 
 void SweepMethod::addToIntersection(Point2D startPoint, Point2D endPoint) {
-    cout << "add to intersection: " << startPoint.toString() << " ; " << endPoint.toString() << endl;
-    bool added = false;
-    auto iter = resultPartsBegin.find(startPoint);
-    auto p1 = startPoint;
-    auto p2 = endPoint;
+    auto sIter = resultParts.find(startPoint);
+    auto eIter = resultParts.find(endPoint);
 
-    if(iter == resultPartsBegin.end() && resultPartsBegin.find(endPoint) != resultPartsBegin.end()){
-        iter = resultPartsBegin.find(endPoint);
-        p1 = endPoint;
-        p2 = startPoint;
-    }
-
-    if(iter != resultPartsBegin.end()){
-        auto l = iter->second;
-        added = true;
-        if(l->back() == p2){
-            vector<Point2D> v;
-            for(auto p : *l){
-                v.push_back(p);
+    if (sIter != resultParts.end() && eIter != resultParts.end() && sIter->second == eIter->second) {
+        //Jeśli domknięcie wielokąta
+        vector<Point2D> v;
+        for (auto p : *sIter->second) {
+            v.push_back(p);
+        }
+        Prism p(v);
+        p.addHeightRanges(firstPrism.getHeightRanges());
+        p.addHeightRanges(secondPrism.getHeightRanges());
+        intersectionParts.add(p);
+        resultParts.erase(sIter);
+        resultParts.erase(eIter);
+    } else if (sIter != resultParts.end() && eIter != resultParts.end() && sIter->second != eIter->second) {
+        //trzeba połączyć dwie listy
+        if (sIter->first == sIter->second->front() && eIter->first == eIter->second->front()) {
+            //łączymy przody list
+            auto toErase = resultParts.find(eIter->second->back());
+            for (auto el : *eIter->second) {
+                sIter->second->push_front(el);
             }
-            Prism p(v);
-            p.addHeightRanges(firstPrism.getHeightRanges());
-            p.addHeightRanges(secondPrism.getHeightRanges());
-            intersectionParts.add(p);
-            resultPartsBegin.erase(iter);
-            resultPartsEnd.erase(p2);
+            resultParts.erase(eIter);
+            resultParts.erase(toErase);
+            resultParts.insert(make_pair(sIter->second->front(), sIter->second));
+            resultParts.erase(sIter);
+        } else if (sIter->first == sIter->second->back() && eIter->first == eIter->second->back()) {
+            //łączymy tyły list
+            auto toErase = resultParts.find(eIter->second->front());
+            for (int i = eIter->second->size() - 1; i >= 0; i--) {
+                sIter->second->push_back((*eIter->second)[i]);
+            }
+            resultParts.erase(eIter);
+            resultParts.erase(toErase);
+            resultParts.insert(make_pair(sIter->second->back(), sIter->second));
+            resultParts.erase(sIter);
+        } else if (sIter->first == sIter->second->back() && eIter->first == eIter->second->front()) {
+            //łączymy tył pierwszej z początkiem drugiej
+            auto toErase = resultParts.find(eIter->second->back());
+            for (auto el : *eIter->second) {
+                sIter->second->push_back(el);
+            }
+            resultParts.erase(eIter);
+            resultParts.erase(toErase);
+            resultParts.insert(make_pair(sIter->second->back(), sIter->second));
+            resultParts.erase(sIter);
+        } else if (sIter->first == sIter->second->front() && eIter->first == eIter->second->back()) {
+            //łączymy początek pierwszej z końcem drugiej
+            auto toErase = resultParts.find(sIter->second->back());
+            for (auto el : *sIter->second) {
+                eIter->second->push_back(el);
+            }
+            resultParts.erase(sIter);
+            resultParts.erase(toErase);
+            resultParts.insert(make_pair(eIter->second->back(), eIter->second));
+            resultParts.erase(eIter);
+        }
+    } else if (sIter != resultParts.end()) {
+        //pierwszy punkt już istnieje w liście
+        auto l = sIter->second;
+        if (startPoint == l->front()) {
+            l->push_front(endPoint);
         } else {
-            auto eIter = resultPartsBegin.find(p2);
-            auto eIterE = resultPartsEnd.find(p2);
-            if(eIter != resultPartsBegin.end()){
-                auto l2 = eIter->second;
-                resultPartsBegin.erase(eIter);
-                resultPartsEnd.erase(l2->back());
-                for(auto v : *l2){
-                    l->push_front(v);
-                }
-            } else if(eIterE != resultPartsEnd.end()){
-                auto l2 = eIterE->second;
-                resultPartsEnd.erase(eIterE);
-                resultPartsBegin.erase(l2->front());
-                for(int i = l2->size() - 1; i >= 0; i--){
-                    l->push_front((*l2)[i]);
-                }
-            } else {
-                l->push_front(p2);
-            }
-            resultPartsBegin.erase(iter);
-            resultPartsBegin.insert(make_pair(l->front(), l));
+            l->push_back(endPoint);
         }
+        resultParts.erase(sIter);
+        resultParts.insert(make_pair(endPoint, l));
+    } else if (eIter != resultParts.end()) {
+        //drugi punkt już istnieje w liście
+        auto l = eIter->second;
+        if (endPoint == l->front()) {
+            l->push_front(startPoint);
+        } else {
+            l->push_back(startPoint);
+        }
+        resultParts.erase(eIter);
+        resultParts.insert(make_pair(startPoint, l));
     } else {
-        auto iter2 = resultPartsEnd.find(startPoint);
-        auto p11 = startPoint;
-        auto p22 = endPoint;
-
-        if(iter2 == resultPartsEnd.end() && resultPartsEnd.find(endPoint) != resultPartsEnd.end()){
-            iter2 = resultPartsEnd.find(endPoint);
-            p11 = endPoint;
-            p22 = startPoint;
-        }
-
-        if(iter2 != resultPartsEnd.end()){
-            added = true;
-            auto l = iter2->second;
-            if(l->front() == p22){
-                vector<Point2D> v;
-                for(auto p : *l){
-                    v.push_back(p);
-                }
-                Prism p(v);
-                p.addHeightRanges(firstPrism.getHeightRanges());
-                p.addHeightRanges(secondPrism.getHeightRanges());
-                intersectionParts.add(p);
-                resultPartsEnd.erase(iter);
-                resultPartsBegin.erase(p2);
-            } else {
-                auto eIter2 = resultPartsEnd.find(p22);
-                auto eIterE2 = resultPartsBegin.find(p22);
-                if(eIter2 != resultPartsEnd.end()){
-                    auto l2 = eIter2->second;
-                    resultPartsEnd.erase(eIter2);
-                    resultPartsBegin.erase(l2->front());
-                    for(int i = l2->size() - 1; i >= 0; i--){
-                        l->push_back((*l2)[i]);
-                    }
-                } else if(eIterE2 != resultPartsBegin.end()){
-                    auto l2 = eIterE2->second;
-                    resultPartsBegin.erase(eIterE2);
-                    resultPartsEnd.erase(l2->back());
-                    for(auto v : *l2){
-                        l->push_back(v);
-                    }
-                } else {
-                    l->push_back(p2);
-                }
-                resultPartsEnd.erase(iter2);
-                resultPartsEnd.insert(make_pair(l->back(), l));
-            }
-        }
-    }
-
-
-    if(!added){
+        //żadnego z punktów nie ma jeszcze na liście
         auto newD = make_shared<deque<Point2D>>();
         newD->push_back(startPoint);
         newD->push_back(endPoint);
-        resultPartsBegin.insert(make_pair(startPoint, newD));
-        resultPartsEnd.insert(make_pair(endPoint, newD));
-    }
-    cout << "intersection parts:\n";
-    for(auto p : intersectionParts){
-       cout <<  p.toString() << endl;
-    }
-
-    cout << "rp begin:\n";
-    for(auto p : resultPartsBegin){
-        cout << "***" << p.first.toString() << endl;
-        for(auto f : *p.second){
-            cout << f.toString() << " ";
-        }
-        cout << endl;
-    }
-
-    cout << "rp end:\n";
-    for(auto p : resultPartsEnd){
-        cout << "***" << p.first.toString() << endl;
-        for(auto f : *p.second){
-            cout << f.toString() << " ";
-        }
-        cout << endl;
+        resultParts.insert(make_pair(startPoint, newD));
+        resultParts.insert(make_pair(endPoint, newD));
     }
 }
 
 bool SweepMethod::isValidIntersection(const Line2D &l1, const Line2D &l2, const Point2D &p, bool result) {
-    if(!result) {
+    if (!result) {
         return false;
-    } else if((p == l1.getStart() || p == l1.getEnd()) && (p == l2.getStart() || p == l2.getEnd() )){
+    } else if ((p == l1.getStart() || p == l1.getEnd()) && (p == l2.getStart() || p == l2.getEnd())) {
         return false;
-    }  else {
+    } else {
         return true;
     }
 }

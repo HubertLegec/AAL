@@ -13,14 +13,12 @@
 using namespace std;
 
 
-
-
 Executor::Executor(std::vector<Prism> input) : input(input), weilerAtherotonTime(0), sweepTime(0) {
 
 }
 
 void Executor::execute() {
-    //executeWeilerAtherton();
+    executeWeilerAtherton();
     executeSweep();
 }
 
@@ -41,15 +39,13 @@ std::vector<Prism> Executor::getWeilerAthertonOutput() const {
 }
 
 void Executor::executeWeilerAtherton() {
-
     Timer t;
-
-    for(int i = 0; i < input.size() - 1; i++){
-        for(int j = i+1; j < input.size(); j++){
-            cout << "WAILER-ATHERTON przetwarzam pare: " << i << " " << j << endl;
+    for (int i = 0; i < input.size() - 1; i++) {
+        for (int j = i + 1; j < input.size(); j++) {
+            //cout << "WAILER-ATHERTON przetwarzam pare: " << i << " " << j << endl;
             WeilerAtherton wa(input[i], input[j]);
             wa.doWeilerAtherton();
-            for(Prism p : wa.getIntersectionParts()){
+            for (Prism p : wa.getIntersectionParts()) {
                 wailerAthertonOutput.push_back(p);
             }
         }
@@ -60,12 +56,12 @@ void Executor::executeWeilerAtherton() {
 
 void Executor::executeSweep() {
     Timer t;
-    for(int i = 0; i < input.size() - 1; i++){
-        for(int j = i+1; j < input.size(); j++){
-            cout << "SWEEP przetwarzam pare: " << i << " " << j << endl;
+    for (int i = 0; i < input.size() - 1; i++) {
+        for (int j = i + 1; j < input.size(); j++) {
+            //cout << "SWEEP przetwarzam pare: " << i << " " << j << endl;
             SweepMethod sm(input[i], input[j]);
             sm.doClipping();
-            for(Prism p : sm.getIntersectionParts()){
+            for (Prism p : sm.getIntersectionParts()) {
                 sweepOutput.push_back(p);
             }
         }

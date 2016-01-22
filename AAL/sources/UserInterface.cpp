@@ -100,42 +100,41 @@ vector<Prism> UserInterface::getPrismList() {
     return result;
 }
 
-void UserInterface::showResult(const vector<Prism> &result, const vector<Prism> & result2, double time1, double time2) {
-    if(outputMode == OutputMode::SCREEN){
-        if(result.size() > 0){
+void UserInterface::showResult(const vector<Prism> &result, const vector<Prism> &result2, double time1, double time2) {
+    if (outputMode == OutputMode::SCREEN) {
+        cout << endl << "input size: " << inputSize;
+        if (result.size() > 0) {
             cout << "----- WEILER ATHERTON -----\n";
-            for(Prism p : result){
+            for (Prism p : result) {
                 cout << p.toString() << endl;
             }
 
-            cout << endl << "input size: " << inputSize;
             cout << endl << "execution time: " << time1;
             cout << endl << "-------------------------------\n";
         }
-        if(result2.size() > 0){
+        if (result2.size() > 0) {
             cout << "----- SWEEP METHOD -----\n";
-            for(Prism p : result2){
+            for (Prism p : result2) {
                 cout << p.toString() << endl;
             }
 
-            cout << endl << "input size: " << inputSize;
             cout << endl << "execution time: " << time2;
             cout << endl << "-------------------------------\n";
         }
     } else {
         fstream output;
         output.open(outputFile, ios::out);
-        if(result.size() > 0){
+        if (result.size() > 0) {
             fstream rawOutput;
             rawOutput.open("output_wa_raw.txt", ios::out);
             output << "\n----- WEILER ATHERTON -----\n";
-            for(Prism p : result){
+            for (Prism p : result) {
                 output << p.toString() << endl;
                 rawOutput << "---" << endl;
-                for(auto r : p.getHeightRanges()){
+                for (auto r : p.getHeightRanges()) {
                     rawOutput << r.first << " " << r.second.first << " " << r.second.second << endl;
                 }
-                for(auto v : p.getVertexList()){
+                for (auto v : p.getVertexList()) {
                     rawOutput << v.getX() << " " << v.getY() << " ";
                 }
                 rawOutput << endl;
@@ -146,17 +145,17 @@ void UserInterface::showResult(const vector<Prism> &result, const vector<Prism> 
             cout << "weiler atherton time: " << time1 << endl;
             output << endl << "-------------------------------\n";
         }
-        if(result2.size() > 0){
+        if (result2.size() > 0) {
             fstream rawOutput;
             rawOutput.open("output_sm_raw.txt", ios::out);
             output << "\n----- SWEEP METHOD -----\n";
-            for(Prism p : result2){
+            for (Prism p : result2) {
                 output << p.toString() << endl;
                 rawOutput << "---" << endl;
-                for(auto r : p.getHeightRanges()){
+                for (auto r : p.getHeightRanges()) {
                     rawOutput << r.first << " " << r.second.first << " " << r.second.second << endl;
                 }
-                for(auto v : p.getVertexList()){
+                for (auto v : p.getVertexList()) {
                     rawOutput << v.getX() << " " << v.getY() << " ";
                 }
                 rawOutput << endl;
@@ -164,6 +163,7 @@ void UserInterface::showResult(const vector<Prism> &result, const vector<Prism> 
 
             rawOutput.close();
             output << endl << "execution time: " << time2;
+            cout << "sweep time: " << time2 << endl;
             output << endl << "-------------------------------\n";
         }
 
@@ -172,7 +172,7 @@ void UserInterface::showResult(const vector<Prism> &result, const vector<Prism> 
 }
 
 Prism UserInterface::generatePrismFromRow(string row) {
-	stringstream ss(row);
+    stringstream ss(row);
     int id;
     ss >> id;
     double bottom;
@@ -180,7 +180,7 @@ Prism UserInterface::generatePrismFromRow(string row) {
     ss >> bottom;
     ss >> top;
     vector<Point2D> vertices;
-    while(!ss.eof()){
+    while (!ss.eof()) {
         double x;
         ss >> x;
         double y;
@@ -211,10 +211,11 @@ void UserInterface::saveInput(const std::vector<Prism> &input) {
     fstream file2;
     file2.open("generator_raw.txt", ios::out);
     file.open(generatorFile, ios::out);
-    for(Prism p : input){
+    for (Prism p : input) {
         file << p.toString() << endl;
-        file2 << p.getId() << " " << p.getHeightRanges().at(p.getId()).first << " " << p.getHeightRanges().at(p.getId()).second;
-        for(Point2D pt : p.getVertexList()){
+        file2 << p.getId() << " " << p.getHeightRanges().at(p.getId()).first << " " <<
+        p.getHeightRanges().at(p.getId()).second;
+        for (Point2D pt : p.getVertexList()) {
             file2 << " " << pt.getX() << " " << pt.getY();
         }
         file2 << endl;

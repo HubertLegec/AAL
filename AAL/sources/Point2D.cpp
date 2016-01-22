@@ -20,8 +20,6 @@ Point2D::Point2D(const Point2D &other) {
     this->y = other.y;
     this->intersectionPoint = other.intersectionPoint;
     this->visited = other.visited;
-    this->firstPartAdded = other.firstPartAdded;
-    this->secondPartAdded = other.secondPartAdded;
 }
 
 Point2D &Point2D::operator=(const Point2D &other) {
@@ -29,14 +27,11 @@ Point2D &Point2D::operator=(const Point2D &other) {
     this->y = other.y;
     this->intersectionPoint = other.intersectionPoint;
     this->visited = other.visited;
-    this->firstPartAdded = other.firstPartAdded;
-    this->secondPartAdded = other.secondPartAdded;
     return *this;
 }
 
 bool Point2D::operator==(const Point2D &other) const {
-    return fabs(this->x - other.x) <= numeric_limits<float>::epsilon() * max(1.0f, max(this->x, other.x)) * 5
-           && fabs(this->y - other.y) <= numeric_limits<float>::epsilon() * max(1.0f, max(this->y, other.y)) * 5;
+    return approximatelyEqual(this->x, other.x) && approximatelyEqual(this->y, other.y);
 }
 
 bool Point2D::operator!=(const Point2D &other) const {
@@ -88,30 +83,14 @@ void Point2D::setVisited(bool visited) {
     this->visited = visited;
 }
 
-bool Point2D::isFirstPartAdded() const {
-    return firstPartAdded;
-}
-
-void Point2D::setFirstPartAdded(bool firstPartAdded) {
-    this->firstPartAdded = firstPartAdded;
-}
-
-bool Point2D::isSecondPartAdded() const {
-    return secondPartAdded;
-}
-
-void Point2D::setSecondPartAdded(bool secondPartAdded) {
-    this->secondPartAdded = secondPartAdded;
-}
-
 string Point2D::toString() const {
     stringstream result;
-    result << "Point2D(" << x << "," << y << "), inters: " << intersectionPoint << "]";
+    result << "Point2D(" << x << "," << y << ")";
     return result.str();
 }
 
 bool Point2D::approximatelyEqual(float a, float b) {
-    return fabs(a - b) <= max(fabs(a), fabs(b)) * numeric_limits<float>::epsilon();
+    return fabs(a - b) <= max(1.0f, max(fabs(a), fabs(b))) * numeric_limits<float>::epsilon();
 }
 
 bool Point2D::graterThan(float a, float b) {

@@ -25,10 +25,6 @@ private:
 
     std::shared_ptr<Point2D> getStartPoint();
 
-    void addFirstPart(std::shared_ptr<Point2D> point);
-
-    void addSecondPart(std::shared_ptr<Point2D> point);
-
     void checkOneInsideAnother();
 
 public:

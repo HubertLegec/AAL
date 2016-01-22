@@ -5,9 +5,7 @@
 
 #include "../headers/Polygon.h"
 #include "../headers/Line2D.h"
-#include <limits>
 #include <sstream>
-#include <c++/iostream>
 
 using namespace std;
 
@@ -84,10 +82,6 @@ void Polygon::add(const Collection<Point2D> &vertices) {
     updateMinMax(vertices.getItems());
 }
 
-int Polygon::size() const {
-    return vertexList.getSize();
-}
-
 float Polygon::getMinX() const {
     return xMin;
 }
@@ -129,27 +123,31 @@ bool Polygon::isInside(const Point2D &point) const {
         return false;
     } else if (point.getX() > xMax || point.getX() < xMin) {
         return false;
-    } else if (point.getY() > yMax || point.getX() < yMin) {
+    } else if (point.getY() > yMax || point.getY() < yMin) {
         return false;
     }
-
-    Point2D helperPoint(xMax + 2, point.getY());
-
+    Point2D helperPoint(xMax + 5, point.getY());
     Line2D testLine(point, helperPoint);
 
     int count = 0;
-    int next = 0;
+    int next, next2;
     for (int i = 0; i < vertexList.getSize(); i++) {
-        next = (next + 1) % vertexList.getSize();
+        next = (i + 1) % vertexList.getSize();
+        next2 = (i + 2) % vertexList.getSize();
         Line2D line(vertexList[i], vertexList[next]);
 
-        if(line.isOnLine(point)){
+        if (line.isOnLine(point)) {
             return true;
         }
 
         auto ip = testLine.getIntersectionPoint(line);
-        if (ip.first && ip.second != line.getEnd()) {
-            count++;
+        if (ip.first) {
+            if (ip.second != line.getEnd() && ip.second != line.getStart()) {
+                count++;
+            } else if (ip.second == line.getEnd() &&
+                       testLine.getOrientation(vertexList[i]) != testLine.getOrientation(vertexList[next2])) {
+                count++;
+            }
         }
     }
     return count % 2 ? true : false;
